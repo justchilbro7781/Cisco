@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reasons | Webex Contact Center Enterprise</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="campaigns.css">
+</head>
+<body>
+
+<!-- Icon sprite (line icons, stroke = currentColor) -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 21c0-3.6 3-5.8 6.5-5.8s6.5 2.2 6.5 5.8"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 15.6c2.9.3 5 2.2 5 5.4"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.8-3 8-7 9-4-1-7-4.2-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="icon-list" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><circle cx="3.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-megaphone" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 001 1h2l9 4V5L6 9H4a1 1 0 00-1 1z"/><path d="M19 9a4 4 0 010 6"/></symbol>
+  <symbol id="icon-shuffle" viewBox="0 0 24 24"><path d="M3 6h3.5c2.5 0 4 1.4 5.5 4M21 6h-4l3 3-3 3"/><path d="M3 18h3.5c2.5 0 4-1.4 5.5-4"/><path d="M21 18h-4l3-3-3-3"/></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M2 20h20"/></symbol>
+  <symbol id="icon-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 00-5.4 5l-6 6 2.4 2.4 6-6a4 4 0 005-5.4l-2.6 2.6-2-2 2.6-2.6z"/></symbol>
+  <symbol id="icon-help-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.5 2.5 0 114.3 1.7c-.8.7-1.8 1.2-1.8 2.6"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1.4-1.4-2-2-1.4 1.4a1.7 1.7 0 00-3 0L14 6.5h-4l-.4 2a1.7 1.7 0 00-3 0L5.2 7.1l-2 2 1.4 1.4a1.7 1.7 0 000 3L3.2 15l2 2 1.4-1.4a1.7 1.7 0 003 0l.4 2h4l.4-2a1.7 1.7 0 003 0l1.4 1.4 2-2-1.4-1.5z"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></symbol>
+  <symbol id="icon-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L3.4 9.7l6-.7L12 3.5z"/></symbol>
+  <symbol id="icon-caret" viewBox="0 0 24 24" stroke="none"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="M16.5 4.5l3 3L8 19l-4 1 1-4L16.5 4.5z"/><path d="M14.5 6.5l3 3"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M8 11l4 4 4-4"/><path d="M4 19h16"/></symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="icon-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.6 4 5.7 4 9s-1.4 6.4-4 9c-2.6-2.6-4-5.7-4-9s1.4-6.4 4-9z"/></symbol>
+</svg>
+
+  <!-- Top Header -->
+  <header class="topbar">
+    <div class="brand">
+      <svg class="cisco-logo" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="9" width="2" height="6" rx="1" fill="#00bceb"/>
+        <rect x="5" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+        <rect x="9" y="3" width="2" height="18" rx="1" fill="#00bceb"/>
+        <rect x="13" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+        <rect x="17" y="9" width="2" height="6" rx="1" fill="#00bceb"/>
+        <rect x="21" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+      </svg>
+      <span class="brand-text">Webex Contact Center Enterprise</span>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" title="Help" aria-label="Help"><svg class="icon"><use href="#icon-help-circle"/></svg></button>
+      <button class="icon-btn" title="Settings" aria-label="Settings"><svg class="icon"><use href="#icon-settings"/></svg></button>
+      <div class="user-menu">
+        <span class="welcome-text">Welcome,<br>Administrator</span>
+        <svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <a class="sidebar-item" href="index.html">
+        <svg class="icon"><use href="#icon-grid"/></svg><span class="label">Launchpad</span>
+      </a>
+      <a class="sidebar-item" href="users.html">
+        <svg class="icon"><use href="#icon-user"/></svg><span class="label">Users</span>
+      </a>
+      <a class="sidebar-item has-caret" href="skills.html" data-toggle="skills">
+        <svg class="icon"><use href="#icon-target"/></svg><span class="label">Skills</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </a>
+      <div class="submenu" id="submenu-skills">
+        <a class="submenu-item" href="agent-to-skill.html">Agent to Skill</a>
+        <a class="submenu-item" href="skill-to-agent.html">Skill to Agent</a>
+        <a class="submenu-item" href="schedules.html">Schedules</a>
+        <a class="submenu-item" href="precision-queues.html">Precision Queues</a>
+        <a class="submenu-item" href="attributes-assignment.html">Attributes Assignment</a>
+      </div>
+      <a class="sidebar-item" href="agent-teams.html">
+        <svg class="icon"><use href="#icon-users"/></svg><span class="label">Agent Teams</span>
+      </a>
+
+      <button class="sidebar-item has-caret" data-toggle="finesse">
+        <svg class="icon"><use href="#icon-shield"/></svg><span class="label">Finesse Admin</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-finesse">
+        <a class="submenu-item" href="agent-desktop-layout.html">Agent Desktop Layout</a>
+        <a class="submenu-item active" href="reasons.html">Reasons</a>
+        <a class="submenu-item" href="phone-books.html">Phone Books</a>
+      </div>
+
+      <button class="sidebar-item has-caret" data-toggle="interaction">
+        <svg class="icon"><use href="#icon-list"/></svg><span class="label">Interaction Manager</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-interaction">
+        <a class="submenu-item" href="audio-manager.html">Audio Manager</a>
+        <a class="submenu-item" href="designer.html">Designer</a>
+        <a class="submenu-item" href="im-admin.html">Admin</a>
+      </div>
+      <a class="sidebar-item" href="campaigns.html">
+        <svg class="icon"><use href="#icon-megaphone"/></svg><span class="label">Campaigns</span>
+      </a>
+      <a class="sidebar-item" href="routing-controls.html">
+        <svg class="icon"><use href="#icon-shuffle"/></svg><span class="label">Routing Controls</span>
+      </a>
+      <button class="sidebar-item has-caret" data-toggle="security">
+        <svg class="icon"><use href="#icon-lock"/></svg><span class="label">Security</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-security">
+        <a class="submenu-item" href="access-groups.html">Access Groups</a>
+        <a class="submenu-item" href="collections.html">Collections</a>
+        <a class="submenu-item" href="roles.html">Roles</a>
+      </div>
+      <a class="sidebar-item" href="dashboard.html">
+        <svg class="icon"><use href="#icon-bar-chart"/></svg><span class="label">Dashboard</span>
+      </a>
+      <button class="sidebar-item has-caret" data-toggle="administration">
+        <svg class="icon"><use href="#icon-tool"/></svg><span class="label">Administration</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-administration">
+        <a class="submenu-item" href="locations.html">Locations</a>
+        <a class="submenu-item" href="settings.html">Settings</a>
+        <a class="submenu-item" href="bulk-request.html">Bulk Request</a>
+        <a class="submenu-item" href="support.html">Support</a>
+        <a class="submenu-item" href="system-wide-audit.html">System Wide Audit</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="collapse-btn" id="collapseBtn" title="Collapse sidebar">
+          <svg class="icon icon-collapse"><use href="#icon-caret"/></svg>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <div class="breadcrumb-row">
+        <div class="breadcrumb">
+          <svg class="icon icon-crumb"><use href="#icon-home"/></svg>
+          <span class="crumb-home">Home</span>
+          <span class="crumb-sep">›</span>
+          <span class="crumb-home">Finesse Admin</span>
+          <span class="crumb-sep">›</span>
+          <span class="crumb-current">Reasons</span>
+        </div>
+        <div class="topbar-stars">
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <span class="status-dot"></span>
+        </div>
+      </div>
+
+      <section class="grid-panel">
+        <div class="grid-toolbar">
+          <span class="record-count"><b id="recordCount">21</b> records</span>
+          <button class="actions-btn" id="actionsBtn">
+            <svg class="icon icon-menu"><use href="#icon-menu"/></svg>
+            <span>Actions</span>
+          </button>
+          <div class="actions-menu" id="actionsMenu" hidden>
+            <button data-action="new">
+              <svg class="icon"><use href="#icon-plus"/></svg><span>New Reason</span>
+            </button>
+            <button data-action="refresh">
+              <svg class="icon"><use href="#icon-refresh"/></svg><span>Refresh</span>
+            </button>
+            <button data-action="export">
+              <svg class="icon"><use href="#icon-download"/></svg><span>Export to CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-scroll">
+          <table class="grid" id="reasonGrid">
+            <colgroup>
+              <col style="width:36px">
+              <col style="width:22%">
+              <col style="width:34%">
+              <col style="width:13%">
+              <col style="width:12%">
+              <col style="width:104px">
+            </colgroup>
+            <thead>
+              <tr class="head-row">
+                <th class="col-expand"><span class="head-caret"><svg class="icon icon-caret"><use href="#icon-caret"/></svg></span></th>
+                <th data-key="reason">Reason<span class="head-caret"><svg class="icon icon-caret"><use href="#icon-caret"/></svg></span></th>
+                <th data-key="description">Description<span class="head-caret"><svg class="icon icon-caret"><use href="#icon-caret"/></svg></span></th>
+                <th data-key="global">Global Display<span class="head-caret"><svg class="icon icon-caret"><use href="#icon-caret"/></svg></span></th>
+                <th data-key="teams">Assigned Teams<span class="head-caret"><svg class="icon icon-caret"><use href="#icon-caret"/></svg></span></th>
+                <th class="col-actions"></th>
+              </tr>
+              <tr class="filter-row">
+                <th></th>
+                <th><input type="text" class="filter-input" data-filter="reason" aria-label="Filter reason"></th>
+                <th><input type="text" class="filter-input" data-filter="description" aria-label="Filter description"></th>
+                <th>
+                  <select class="filter-select" data-filter="global" aria-label="Filter global display">
+                    <option value=""></option>
+                    <option value="yes">Global</option>
+                    <option value="no">Not global</option>
+                  </select>
+                </th>
+                <th><input type="text" class="filter-input" data-filter="teams" aria-label="Filter assigned teams"></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="gridBody"></tbody>
+          </table>
+          <div class="no-records" id="noRecords" hidden>No records found</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="sidebar.js"></script>
+<script src="reasons.js"></script>
+</body>
+</html>

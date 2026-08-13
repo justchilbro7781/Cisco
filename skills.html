@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills | Webex Contact Center Enterprise</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="campaigns.css">
+<link rel="stylesheet" href="bulk-request.css">
+<link rel="stylesheet" href="skills.css">
+</head>
+<body>
+
+<!-- Icon sprite (line icons, stroke = currentColor) -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+  <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 21c0-3.6 3-5.8 6.5-5.8s6.5 2.2 6.5 5.8"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 15.6c2.9.3 5 2.2 5 5.4"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.8-3 8-7 9-4-1-7-4.2-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="icon-list" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><circle cx="3.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-megaphone" viewBox="0 0 24 24"><path d="M3 10v4a1 1 0 001 1h2l9 4V5L6 9H4a1 1 0 00-1 1z"/><path d="M19 9a4 4 0 010 6"/></symbol>
+  <symbol id="icon-shuffle" viewBox="0 0 24 24"><path d="M3 6h3.5c2.5 0 4 1.4 5.5 4M21 6h-4l3 3-3 3"/><path d="M3 18h3.5c2.5 0 4-1.4 5.5-4"/><path d="M21 18h-4l3-3-3-3"/></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></symbol>
+  <symbol id="icon-bar-chart" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/><path d="M2 20h20"/></symbol>
+  <symbol id="icon-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 00-5.4 5l-6 6 2.4 2.4 6-6a4 4 0 005-5.4l-2.6 2.6-2-2 2.6-2.6z"/></symbol>
+  <symbol id="icon-help-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.5 2.5 0 114.3 1.7c-.8.7-1.8 1.2-1.8 2.6"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a1.7 1.7 0 000-3l1.4-1.4-2-2-1.4 1.4a1.7 1.7 0 00-3 0L14 6.5h-4l-.4 2a1.7 1.7 0 00-3 0L5.2 7.1l-2 2 1.4 1.4a1.7 1.7 0 000 3L3.2 15l2 2 1.4-1.4a1.7 1.7 0 003 0l.4 2h4l.4-2a1.7 1.7 0 003 0l1.4 1.4 2-2-1.4-1.5z"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/></symbol>
+  <symbol id="icon-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L3.4 9.7l6-.7L12 3.5z"/></symbol>
+  <symbol id="icon-caret" viewBox="0 0 24 24" stroke="none"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="M16.5 4.5l3 3L8 19l-4 1 1-4L16.5 4.5z"/><path d="M14.5 6.5l3 3"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="M8 11l4 4 4-4"/><path d="M4 19h16"/></symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="icon-building" viewBox="0 0 24 24"><path d="M4 21V6a1 1 0 011-1h7a1 1 0 011 1v15"/><path d="M13 10h6a1 1 0 011 1v10"/><path d="M7 9h3M7 13h3M7 17h3M16 14h1M16 18h1"/><path d="M2 21h20"/></symbol>
+  <symbol id="icon-sitemap" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="2" y="17" width="6" height="4" rx="1"/><rect x="16" y="17" width="6" height="4" rx="1"/><path d="M12 7v5M5 17v-3h14v3"/></symbol>
+  <symbol id="icon-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21V3z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="icon-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="icon-type" viewBox="0 0 24 24"><path d="M5 6h14M12 6v13M9 19h6"/></symbol>
+  <symbol id="icon-toggle" viewBox="0 0 24 24"><rect x="2.5" y="7.5" width="19" height="9" rx="4.5"/><circle cx="16.5" cy="12" r="2.6"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></symbol>
+  <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M17.5 12v4M20.5 12v3"/></symbol>
+  <symbol id="icon-user-cog" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.8 2.9-6 6.5-6"/><circle cx="17.5" cy="17" r="2.6"/><path d="M17.5 13v1.4M17.5 19.6V21M13.9 17h1.4M19.7 17H21"/></symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></symbol>
+  <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2.5h8a2 2 0 012 2V18a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></symbol>
+  <symbol id="icon-warning" viewBox="0 0 24 24"><path d="M12 4l9 15.5H3L12 4z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="0.7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="icon-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5V4z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
+  <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M17.5 12v4M20.5 12v3"/></symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></symbol>
+  <symbol id="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+  <symbol id="icon-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></symbol>
+  <symbol id="icon-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/></symbol>
+  <symbol id="icon-filter-x" viewBox="0 0 24 24"><path d="M3 4h13l-5.5 7V18l-2 1v-8L3 4z"/><path d="M16 6l5 5M21 6l-5 5"/></symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" stroke="none"><path d="M4 13l4.5 4.5L20 6.5l-1.5-1.5L8.5 14 5.5 11z" fill="currentColor"/></symbol>
+  <symbol id="icon-x-mark" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="icon-clock-history" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M8 3l-2 2M16 3l2 2"/></symbol>
+  <symbol id="icon-expand" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M8 12h8M12 8v8"/></symbol>
+  <symbol id="icon-collapse-all" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M8 12h8"/></symbol>
+  <symbol id="icon-tag" viewBox="0 0 24 24"><path d="M3 11.5V5a2 2 0 012-2h6.5L21 11.5 12.5 20 3 11.5z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></symbol>
+</svg>
+
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="cisco-logo" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="9" width="2" height="6" rx="1" fill="#00bceb"/>
+        <rect x="5" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+        <rect x="9" y="3" width="2" height="18" rx="1" fill="#00bceb"/>
+        <rect x="13" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+        <rect x="17" y="9" width="2" height="6" rx="1" fill="#00bceb"/>
+        <rect x="21" y="6" width="2" height="12" rx="1" fill="#00bceb"/>
+      </svg>
+      <span class="brand-text">Webex Contact Center Enterprise</span>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" title="Help" aria-label="Help"><svg class="icon"><use href="#icon-help-circle"/></svg></button>
+      <button class="icon-btn" title="Settings" aria-label="Settings"><svg class="icon"><use href="#icon-settings"/></svg></button>
+      <div class="user-menu">
+        <span class="welcome-text">Welcome,<br>Administrator</span>
+        <svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <nav class="sidebar" id="sidebar">
+      <a class="sidebar-item" href="index.html">
+        <svg class="icon"><use href="#icon-grid"/></svg><span class="label">Launchpad</span>
+      </a>
+      <a class="sidebar-item" href="users.html">
+        <svg class="icon"><use href="#icon-user"/></svg><span class="label">Users</span>
+      </a>
+      <a class="sidebar-item has-caret active" href="skills.html" data-toggle="skills">
+        <svg class="icon"><use href="#icon-target"/></svg><span class="label">Skills</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </a>
+      <div class="submenu" id="submenu-skills">
+        <a class="submenu-item" href="agent-to-skill.html">Agent to Skill</a>
+        <a class="submenu-item" href="skill-to-agent.html">Skill to Agent</a>
+        <a class="submenu-item" href="schedules.html">Schedules</a>
+        <a class="submenu-item" href="precision-queues.html">Precision Queues</a>
+        <a class="submenu-item" href="attributes-assignment.html">Attributes Assignment</a>
+      </div>
+      <a class="sidebar-item" href="agent-teams.html">
+        <svg class="icon"><use href="#icon-users"/></svg><span class="label">Agent Teams</span>
+      </a>
+
+      <button class="sidebar-item has-caret" data-toggle="finesse">
+        <svg class="icon"><use href="#icon-shield"/></svg><span class="label">Finesse Admin</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-finesse">
+        <a class="submenu-item" href="agent-desktop-layout.html">Agent Desktop Layout</a>
+        <a class="submenu-item" href="reasons.html">Reasons</a>
+        <a class="submenu-item" href="phone-books.html">Phone Books</a>
+      </div>
+
+      <button class="sidebar-item has-caret" data-toggle="interaction">
+        <svg class="icon"><use href="#icon-list"/></svg><span class="label">Interaction Manager</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-interaction">
+        <a class="submenu-item" href="audio-manager.html">Audio Manager</a>
+        <a class="submenu-item" href="designer.html">Designer</a>
+        <a class="submenu-item" href="im-admin.html">Admin</a>
+      </div>
+      <a class="sidebar-item" href="campaigns.html">
+        <svg class="icon"><use href="#icon-megaphone"/></svg><span class="label">Campaigns</span>
+      </a>
+      <a class="sidebar-item" href="routing-controls.html">
+        <svg class="icon"><use href="#icon-shuffle"/></svg><span class="label">Routing Controls</span>
+      </a>
+      <button class="sidebar-item has-caret" data-toggle="security">
+        <svg class="icon"><use href="#icon-lock"/></svg><span class="label">Security</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-security">
+        <a class="submenu-item" href="access-groups.html">Access Groups</a>
+        <a class="submenu-item" href="collections.html">Collections</a>
+        <a class="submenu-item" href="roles.html">Roles</a>
+      </div>
+      <a class="sidebar-item" href="dashboard.html">
+        <svg class="icon"><use href="#icon-bar-chart"/></svg><span class="label">Dashboard</span>
+      </a>
+
+      <button class="sidebar-item has-caret" data-toggle="administration">
+        <svg class="icon"><use href="#icon-tool"/></svg><span class="label">Administration</span><svg class="icon icon-caret"><use href="#icon-caret"/></svg>
+      </button>
+      <div class="submenu" id="submenu-administration">
+        <a class="submenu-item" href="locations.html">Locations</a>
+        <a class="submenu-item" href="settings.html">Settings</a>
+        <a class="submenu-item" href="bulk-request.html">Bulk Request</a>
+        <a class="submenu-item" href="support.html">Support</a>
+        <a class="submenu-item" href="system-wide-audit.html">System Wide Audit</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="collapse-btn" id="collapseBtn" title="Collapse sidebar">
+          <svg class="icon icon-collapse"><use href="#icon-caret"/></svg>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <div class="breadcrumb-row">
+        <div class="breadcrumb">
+          <svg class="icon icon-crumb"><use href="#icon-home"/></svg>
+          <span class="crumb-home">Home</span>
+          <span class="crumb-sep">&rsaquo;</span>
+          <span class="crumb-current">Skills</span>
+        </div>
+        <div class="topbar-stars">
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <svg class="icon star"><use href="#icon-star"/></svg>
+          <span class="status-dot"></span>
+        </div>
+      </div>
+
+      <section class="grid-panel">
+        <div class="grid-toolbar">
+          <span class="record-count"><b id="recordCount">48</b> records</span>
+          <div class="im-spacer"></div>
+          <div class="bulk-field" style="margin-right:14px">
+            <label for="skillTypeFilter">UWF Skill Type</label>
+            <select class="bulk-select" id="skillTypeFilter">
+              <option value="">All</option>
+              <option value="chat">Chat</option>
+              <option value="email">Email</option>
+              <option value="facebook">Facebook</option>
+              <option value="sms">SMS</option>
+              <option value="uwf">All UWF Skill</option>
+            </select>
+          </div>
+          <button class="actions-btn" id="actionsBtn">
+            <svg class="icon icon-menu"><use href="#icon-menu"/></svg>
+            <span>Actions</span>
+          </button>
+          <div class="actions-menu wide" id="actionsMenu" hidden>
+            <button data-action="new">
+              <svg class="icon"><use href="#icon-plus"/></svg><span>Add New Skill</span>
+            </button>
+            <button data-action="export-membership">
+              <svg class="icon"><use href="#icon-users"/></svg><span>Export Skill Membership By Agent</span>
+            </button>
+            <div class="actions-menu-sep"></div>
+            <button data-action="clear-filters">
+              <svg class="icon"><use href="#icon-filter-x"/></svg><span>Clear all filters</span>
+            </button>
+            <div class="actions-menu-sep"></div>
+            <button data-action="export-all-csv">
+              <svg class="icon"><use href="#icon-download"/></svg><span>Export all data as CSV</span>
+            </button>
+            <button data-action="export-visible-csv">
+              <svg class="icon"><use href="#icon-download"/></svg><span>Export visible data as CSV</span>
+            </button>
+            <button data-action="export-all-pdf">
+              <svg class="icon"><use href="#icon-file"/></svg><span>Export all data as PDF</span>
+            </button>
+            <button data-action="export-visible-pdf">
+              <svg class="icon"><use href="#icon-file"/></svg><span>Export visible data as PDF</span>
+            </button>
+            <div class="actions-menu-sep"></div>
+            <div class="actions-menu-label">Columns:</div>
+            <div class="col-toggle-list" id="colToggleList"></div>
+          </div>
+        </div>
+
+        <div class="grid-scroll">
+          <table class="grid" id="skillGrid">
+            <colgroup id="gridColgroup"></colgroup>
+            <thead id="gridHead"></thead>
+            <tbody id="gridBody"></tbody>
+          </table>
+          <div class="no-records" id="noRecords" hidden>No records found</div>
+        </div>
+      </section>
+
+      <!-- Edit skill dialog -->
+      <div class="modal-overlay" id="editSkillModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editSkillTitle">
+          <div class="modal-head">
+            <span class="modal-title" id="editSkillTitle">Edit Skill</span>
+            <button class="modal-close" id="editSkillClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-row">
+              <label class="modal-label" for="skillNameInput">Name</label>
+              <input type="text" class="modal-field" id="skillNameInput">
+            </div>
+            <div class="modal-row">
+              <label class="modal-label" for="skillDescInput">Description</label>
+              <textarea class="modal-field" id="skillDescInput" placeholder="Optional"></textarea>
+            </div>
+            <div class="modal-row">
+              <label class="modal-label" for="skillAgentsInput"># of Agents</label>
+              <input type="text" class="modal-field" id="skillAgentsInput" readonly>
+            </div>
+            <div class="modal-row">
+              <label class="modal-label" for="skillTypeInput">Skill type</label>
+              <input type="text" class="modal-field" id="skillTypeInput" readonly>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button class="modal-btn save" id="editSkillSave">Save</button>
+            <button class="modal-btn" id="editSkillCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create skill dialog -->
+      <div class="modal-overlay" id="createSkillModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="createSkillTitle">
+          <div class="modal-head">
+            <span class="modal-title" id="createSkillTitle">Create Skill</span>
+            <button class="modal-close" id="createSkillClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-row">
+              <label class="modal-label" for="newSkillNameInput">Name</label>
+              <input type="text" class="modal-field" id="newSkillNameInput">
+            </div>
+            <div class="modal-row">
+              <label class="modal-label" for="newSkillDescInput">Description</label>
+              <textarea class="modal-field" id="newSkillDescInput" placeholder="Optional"></textarea>
+            </div>
+            <div class="modal-row">
+              <label class="modal-label" for="newSkillTypeInput">Skill type</label>
+              <select class="modal-field" id="newSkillTypeInput">
+                <option>Cisco_Voice</option>
+                <option>CIM_BC</option>
+                <option>CIM_EIM</option>
+                <option>CIM_OUTBOUND</option>
+                <option>CIM_WIM</option>
+                <option>ECE_Chat</option>
+                <option>ECE_Email</option>
+                <option>ECE_Outbound</option>
+                <option>EGAIN_CHAT</option>
+                <option>EGAIN_EMAIL</option>
+                <option>EGAIN_OUTBOUND</option>
+                <option>EGAIN_SOCIAL</option>
+                <option>Tasks</option>
+                <option>MCAL_Chat</option>
+                <option>MCAL_Email</option>
+                <option>MCAL_Outbound</option>
+                <option>MCAL_SMS</option>
+                <option>MCAL_Facebook</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button class="modal-btn save" id="createSkillSave">Save</button>
+            <button class="modal-btn" id="createSkillCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill audit dialog -->
+      <div class="modal-overlay" id="skillAuditModal" hidden>
+        <div class="modal wide" role="dialog" aria-modal="true" aria-labelledby="skillAuditTitle">
+          <div class="modal-head">
+            <span class="modal-title" id="skillAuditTitle">Skill audit</span>
+            <button class="modal-close" id="skillAuditClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+
+          <div class="audit-toolbar">
+            <select class="audit-select" id="skillAuditType">
+              <option>All</option>
+              <option>Agent Added</option>
+              <option>Agent Removed</option>
+              <option>Description Changed</option>
+            </select>
+            <input type="text" class="audit-search" id="skillAuditSearch" placeholder="Enter search term">
+            <button class="audit-search-btn" id="skillAuditSearchBtn" title="Search" aria-label="Search">
+              <svg class="icon"><use href="#icon-search"/></svg>
+            </button>
+          </div>
+
+          <div class="audit-chips" id="skillAuditChips"></div>
+
+          <div class="audit-date-badge" id="skillAuditDateBadge" hidden>
+            <svg class="icon"><use href="#icon-calendar"/></svg><span id="skillAuditDateText"></span>
+          </div>
+
+          <div class="audit-results" id="skillAuditResults"></div>
+
+          <div class="audit-foot">
+            <span class="audit-updated" id="skillAuditUpdated"></span>
+            <button class="modal-btn" id="skillAuditCloseBtn">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<script src="sidebar.js"></script>
+<script src="skills.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/* ---------- Skills grid extras ---------- */
+
+.skill-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.skill-type-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skill-type-dot.business { background: #049fd9; }
+.skill-type-dot.cim      { background: #f0ad4e; }
+.skill-type-dot.system   { background: #a8b0b6; }
+
+.skill-name {
+  font-weight: 600;
+  color: #3a3a3a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skill-desc-empty {
+  color: #c2c8cc;
+  font-style: italic;
+}
