@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (e.target.closest('.key-btn')) {
-      alert('A password reset link has been sent for ' + user.username + '.');
+      openResetPasswordModal(user);
       return;
     }
     if (e.target.closest('.copy-btn')) {
@@ -191,11 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (e.target.closest('.skills-btn')) {
-      const skills = prompt('Skills for ' + user.first + ' ' + user.last + ' (comma separated):', user.skills || '');
-      if (skills !== null) {
-        user.skills = skills.trim();
-        renderBody();
-      }
+      openSkillsModal(user);
       return;
     }
     if (e.target.closest('.access-btn')) {
@@ -863,6 +859,528 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', (e) => {
     if (!summaryModal.hidden && e.key === 'Escape') closeSummaryModal();
+  });
+
+  /* ================================================================
+     RESET PASSWORD MODAL
+     ================================================================ */
+  const resetPasswordModal = document.getElementById('resetPasswordModal');
+  let rpwUser = null;
+  let rpwCurrentGenerated = '';
+
+  const UPPER = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const LOWER = 'abcdefghijkmnpqrstuvwxyz';
+  const NUMS  = '23456789';
+  const SPECS = '!@#$%^&*-_=+?';
+
+  function generatePassword(len) {
+    len = len || 14;
+    const all = UPPER + LOWER + NUMS + SPECS;
+    let p = '';
+    p += UPPER[Math.floor(Math.random() * UPPER.length)];
+    p += LOWER[Math.floor(Math.random() * LOWER.length)];
+    p += NUMS[Math.floor(Math.random() * NUMS.length)];
+    p += SPECS[Math.floor(Math.random() * SPECS.length)];
+    for (let i = 4; i < len; i++) {
+      p += all[Math.floor(Math.random() * all.length)];
+    }
+    return p.split('').sort(() => Math.random() - 0.5).join('');
+  }
+
+  function rpwInitials(u) {
+    const a = (u.first || '?').charAt(0);
+    const b = (u.last || '').charAt(0);
+    return (a + b).toUpperCase();
+  }
+
+  function openResetPasswordModal(user) {
+    rpwUser = user;
+    document.getElementById('rpwSubtitle').textContent = user.username + ' @ Webex Contact Center';
+    document.getElementById('rpwUserName').textContent = user.first + ' ' + user.last;
+    document.getElementById('rpwUserUsername').textContent = user.username;
+    document.getElementById('rpwUserTeam').textContent = user.team || 'No team';
+    const pill = document.getElementById('rpwUserStatus');
+    pill.textContent = user.status === 'active' ? 'Active' : 'Inactive';
+    pill.className = 'rpw-status-pill ' + user.status;
+
+    const avatar = document.getElementById('rpwAvatar');
+    avatar.textContent = rpwInitials(user);
+    avatar.style.background = AVATAR_COLOR[user.type];
+
+    document.querySelector('input[name="rpwMode"][value="auto"]').checked = true;
+    document.getElementById('rpwManualSection').hidden = true;
+    document.getElementById('rpwAutoSection').hidden = false;
+
+    document.getElementById('rpwNewPass').value = '';
+    document.getElementById('rpwConfirmPass').value = '';
+    document.getElementById('rpwNewPass').classList.remove('invalid');
+    document.getElementById('rpwConfirmPass').classList.remove('invalid');
+    document.getElementById('rpwStrengthLabel').textContent = '';
+    document.getElementById('rpwStrengthLabel').className = 'rpw-strength-label';
+    document.querySelector('.rpw-strength-bars').className = 'rpw-strength-bars';
+    document.getElementById('rpwMatch').textContent = '';
+    document.getElementById('rpwMatch').className = 'rpw-match';
+    document.querySelectorAll('.rpw-req').forEach(r => r.classList.remove('pass'));
+
+    document.getElementById('rpwForceChange').checked = true;
+    document.getElementById('rpwSendEmail').checked = true;
+    document.getElementById('rpwToast').hidden = true;
+
+    rpwCurrentGenerated = generatePassword(14);
+    document.getElementById('rpwGenPass').textContent = rpwCurrentGenerated;
+    document.getElementById('rpwCopyGen').classList.remove('copied');
+
+    resetPasswordModal.hidden = false;
+  }
+
+  function closeResetPasswordModal() {
+    resetPasswordModal.hidden = true;
+    rpwUser = null;
+  }
+
+  document.querySelectorAll('input[name="rpwMode"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const mode = document.querySelector('input[name="rpwMode"]:checked').value;
+      document.getElementById('rpwManualSection').hidden = mode !== 'manual';
+      document.getElementById('rpwAutoSection').hidden = mode !== 'auto';
+    });
+  });
+
+  document.getElementById('rpwToggleNew').addEventListener('click', () => {
+    const i = document.getElementById('rpwNewPass');
+    i.type = i.type === 'password' ? 'text' : 'password';
+  });
+
+  document.getElementById('rpwToggleConfirm').addEventListener('click', () => {
+    const i = document.getElementById('rpwConfirmPass');
+    i.type = i.type === 'password' ? 'text' : 'password';
+  });
+
+  function checkPasswordReqs(pw) {
+    return {
+      length: pw.length >= 8,
+      upper: /[A-Z]/.test(pw),
+      lower: /[a-z]/.test(pw),
+      num: /[0-9]/.test(pw),
+      spec: /[^A-Za-z0-9]/.test(pw)
+    };
+  }
+
+  function passwordStrength(pw) {
+    if (!pw) return { level: 0, label: '' };
+    const r = checkPasswordReqs(pw);
+    let score = Object.values(r).filter(Boolean).length;
+    if (pw.length >= 12 && score >= 4) score = 5;
+    if (score <= 1) return { level: 1, label: 'Weak' };
+    if (score === 2) return { level: 2, label: 'Fair' };
+    if (score === 3 || score === 4) return { level: 3, label: 'Good' };
+    return { level: 4, label: 'Strong' };
+  }
+
+  function updateRpwStrengthUI() {
+    const pw = document.getElementById('rpwNewPass').value;
+    const reqs = checkPasswordReqs(pw);
+    document.querySelectorAll('.rpw-req').forEach(el => {
+      const key = el.dataset.req;
+      el.classList.toggle('pass', reqs[key]);
+      const svg = el.querySelector('use');
+      if (svg) {
+        svg.setAttribute('href', reqs[key] ? '#icon-check' : '#icon-circle');
+      }
+    });
+    const st = passwordStrength(pw);
+    const barsEl = document.querySelector('.rpw-strength-bars');
+    const labelEl = document.getElementById('rpwStrengthLabel');
+    const cls = ['', 'weak', 'fair', 'good', 'strong'][st.level] || '';
+    barsEl.className = 'rpw-strength-bars ' + cls;
+    labelEl.textContent = st.label;
+    labelEl.className = 'rpw-strength-label ' + cls;
+
+    const conf = document.getElementById('rpwConfirmPass').value;
+    const matchEl = document.getElementById('rpwMatch');
+    if (conf === '' || pw === '') {
+      matchEl.textContent = '';
+      matchEl.className = 'rpw-match';
+    } else if (conf === pw) {
+      matchEl.textContent = 'Passwords match';
+      matchEl.className = 'rpw-match ok';
+    } else {
+      matchEl.textContent = 'Passwords do not match';
+      matchEl.className = 'rpw-match bad';
+    }
+  }
+
+  document.getElementById('rpwNewPass').addEventListener('input', updateRpwStrengthUI);
+  document.getElementById('rpwConfirmPass').addEventListener('input', updateRpwStrengthUI);
+
+  document.getElementById('rpwRefreshGen').addEventListener('click', () => {
+    rpwCurrentGenerated = generatePassword(14);
+    document.getElementById('rpwGenPass').textContent = rpwCurrentGenerated;
+    document.getElementById('rpwCopyGen').classList.remove('copied');
+  });
+
+  document.getElementById('rpwCopyGen').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    try {
+      await navigator.clipboard.writeText(rpwCurrentGenerated);
+    } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = rpwCurrentGenerated;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e2) {}
+      document.body.removeChild(ta);
+    }
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1500);
+  });
+
+  document.getElementById('rpwSave').addEventListener('click', () => {
+    const mode = document.querySelector('input[name="rpwMode"]:checked').value;
+    const toast = document.getElementById('rpwToast');
+    const toastText = document.getElementById('rpwToastText');
+    let finalPass = '';
+
+    if (mode === 'manual') {
+      const np = document.getElementById('rpwNewPass');
+      const cp = document.getElementById('rpwConfirmPass');
+      np.classList.remove('invalid');
+      cp.classList.remove('invalid');
+      if (!np.value.trim()) {
+        np.classList.add('invalid');
+        np.focus();
+        return;
+      }
+      const reqs = checkPasswordReqs(np.value);
+      const passed = Object.values(reqs).filter(Boolean).length;
+      if (passed < 3) {
+        np.classList.add('invalid');
+        np.focus();
+        return;
+      }
+      if (np.value !== cp.value) {
+        cp.classList.add('invalid');
+        cp.focus();
+        return;
+      }
+      finalPass = np.value;
+    } else {
+      finalPass = rpwCurrentGenerated;
+    }
+
+    const force = document.getElementById('rpwForceChange').checked;
+    const email = document.getElementById('rpwSendEmail').checked;
+    let msg = 'Password has been reset for ' + rpwUser.username;
+    if (force) msg += ' (force change on login)';
+    if (email) msg += ', email notification sent';
+    msg += '.';
+    toastText.textContent = msg;
+    toast.hidden = false;
+    setTimeout(() => {
+      closeResetPasswordModal();
+    }, 1600);
+  });
+
+  document.getElementById('rpwCancel').addEventListener('click', closeResetPasswordModal);
+  document.getElementById('rpwClose').addEventListener('click', closeResetPasswordModal);
+  resetPasswordModal.addEventListener('click', (e) => {
+    if (e.target === resetPasswordModal) closeResetPasswordModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!resetPasswordModal.hidden && e.key === 'Escape') closeResetPasswordModal();
+  });
+
+  /* ================================================================
+     USER SKILLS MODAL
+     ================================================================ */
+  const SKILLS_LIST = [
+    { name: 'A_Sales', type: 'voice',  agents: 2 },
+    { name: 'CumulusMain', type: 'voice', agents: 2 },
+    { name: 'CumulusCRM', type: 'voice', agents: 1 },
+    { name: 'CumulusUWF', type: 'voice', agents: 3 },
+    { name: 'CumulusOutbound', type: 'voice', agents: 1 },
+    { name: 'CumulusCallGen', type: 'voice', agents: 1 },
+    { name: 'CumulusCB', type: 'voice', agents: 0 },
+    { name: 'CumulusCertification', type: 'voice', agents: 0 },
+    { name: 'CumulusFinance', type: 'voice', agents: 0 },
+    { name: 'CumulusHealthCare', type: 'voice', agents: 0 },
+    { name: 'CumulusInbound', type: 'voice', agents: 2 },
+    { name: 'CumulusCity', type: 'voice', agents: 0 },
+    { name: 'CumulusTravel', type: 'voice', agents: 0 },
+    { name: 'CumulusUtility', type: 'voice', agents: 0 },
+    { name: 'CumulusRLM', type: 'voice', agents: 0 },
+    { name: 'CumulusTask', type: 'voice', agents: 0 },
+    { name: 'CumulusVIVR', type: 'voice', agents: 0 },
+    { name: 'CumulusChat', type: 'chat', agents: 1 },
+    { name: 'CumulusChatEnglish', type: 'chat', agents: 0 },
+    { name: 'CumulusChatItalian', type: 'chat', agents: 0 },
+    { name: 'CumulusChatSpanish', type: 'chat', agents: 0 },
+    { name: 'CUCM_PG_1.CCE_Chat.default.97456', type: 'chat', agents: 0 },
+    { name: 'CIM_WIM', type: 'chat', agents: 0 },
+    { name: 'CumulusEmail', type: 'email', agents: 0 },
+    { name: 'CIM_EIM', type: 'email', agents: 0 },
+    { name: 'CUCM_PG_1.ECE_Email.defaul.11266', type: 'email', agents: 0 },
+    { name: 'CUCM_PG_1.EGAIN_EMAIL.defa.05821', type: 'email', agents: 0 },
+    { name: 'CIM_CALLBACK', type: 'cim', agents: 1 },
+    { name: 'CIM_DELAYED', type: 'cim', agents: 1 },
+    { name: 'CIM_OUTBOUND', type: 'cim', agents: 2 },
+    { name: 'CUCM_PG_1.CIM_BC.default.13802', type: 'cim', agents: 0 },
+    { name: 'CUCM_PG_1.CIM_OUTBOUND.def.74114', type: 'cim', agents: 0 },
+    { name: 'CUCM_PG_1.Generic.default.00112', type: 'system', agents: 0 },
+    { name: 'CUCM_PG_1.RONA.default.09214', type: 'system', agents: 0 },
+    { name: 'CUCM_PG_1.Cisco_Voice.defa.01370', type: 'system', agents: 0 },
+    { name: 'CUCM_PG_1.ECE_Outbound.def.25076', type: 'system', agents: 0 },
+    { name: 'CumulusSMS', type: 'system', agents: 0 },
+    { name: 'CumulusFacebook', type: 'system', agents: 0 },
+    { name: 'AcqueonOutboundAgent', type: 'voice', agents: 1 },
+    { name: 'AcqueonOutboundIVR', type: 'voice', agents: 2 },
+    { name: 'AcqueonOutboundPreview', type: 'voice', agents: 2 },
+    { name: 'ConsiliumOutboundAgent', type: 'voice', agents: 1 },
+    { name: 'ConsiliumOutboundIVR', type: 'voice', agents: 1 },
+    { name: 'ConsiliumOutboundPreview', type: 'voice', agents: 1 }
+  ];
+
+  const userSkills = {};
+  function skillsFor(username) {
+    if (!userSkills[username]) userSkills[username] = [];
+    return userSkills[username];
+  }
+  userSkills.amacdowell = ['A_Sales', 'CumulusMain'];
+  userSkills.annika = ['CumulusOutbound', 'CumulusChat'];
+  userSkills.bbrown = ['A_Sales', 'CumulusInbound'];
+  userSkills.csupervisor = ['CumulusCallGen', 'CumulusMain', 'CumulusUWF'];
+  userSkills.hliang = ['CumulusUWF', 'CumulusEmail'];
+  userSkills.jabracks = ['CumulusUWF', 'CumulusCRM'];
+  userSkills.Jdoe = ['A_Sales', 'CumulusInbound'];
+  userSkills.jopeters = ['CumulusCRM', 'CumulusChat'];
+  userSkills.rbarrows = ['CumulusMain', 'CumulusUWF', 'CumulusCB'];
+  userSkills.sjeffers = ['CumulusMain', 'CumulusCity'];
+  userSkills.vbcpod1 = ['CumulusOutbound', 'CumulusTask'];
+
+  const skillsModal = document.getElementById('skillsModal');
+  let skillsUser = null;
+  let usAssigned = [];
+  let usAvailable = [];
+  let usChecked = {};
+  const usFilter = { assigned: '', available: '' };
+  const usSort = { assigned: 1, available: 1 };
+  let usTypeFilter = 'all';
+
+  function openSkillsModal(user) {
+    skillsUser = user;
+    const assignedNames = skillsFor(user.username).slice();
+    usAssigned = SKILLS_LIST.filter(s => assignedNames.indexOf(s.name) !== -1);
+    usAvailable = SKILLS_LIST.filter(s => assignedNames.indexOf(s.name) === -1);
+    usChecked = {};
+    usFilter.assigned = usFilter.available = '';
+    usTypeFilter = 'all';
+    document.getElementById('usAssignedFilter').value = '';
+    document.getElementById('usAvailableFilter').value = '';
+
+    document.getElementById('usSubtitle').textContent = user.username + ' — skill assignment';
+    document.getElementById('usUserName').textContent = user.first + ' ' + user.last;
+    document.getElementById('usUserUsername').textContent = user.username;
+    document.getElementById('usUserTeam').textContent = user.team || 'No team';
+
+    const av = document.getElementById('usAvatar');
+    av.textContent = initials(user);
+    av.style.background = AVATAR_COLOR[user.type];
+
+    document.querySelectorAll('.us-type-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.uskill === 'all');
+    });
+
+    renderSkills();
+    skillsModal.hidden = false;
+  }
+
+  function closeSkillsModal() {
+    skillsModal.hidden = true;
+    skillsUser = null;
+  }
+
+  function skillMatchesType(skill) {
+    if (usTypeFilter === 'all') return true;
+    if (usTypeFilter === 'voice') return skill.type === 'voice';
+    return skill.type === usTypeFilter;
+  }
+
+  function usRowsFor(side) {
+    const list = side === 'assigned' ? usAssigned : usAvailable;
+    const f = usFilter[side];
+    return list
+      .filter(s => skillMatchesType(s))
+      .filter(s => s.name.toLowerCase().includes(f) ||
+                   (s.type && s.type.toLowerCase().includes(f)))
+      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()) * usSort[side]);
+  }
+
+  function renderSkillPane(side, listEl, countId, allId) {
+    const rows = usRowsFor(side);
+    listEl.innerHTML = '';
+    if (rows.length === 0) {
+      listEl.innerHTML = '<li class="sup-empty-list">No skills</li>';
+    } else {
+      rows.forEach(s => {
+        const li = document.createElement('li');
+        li.dataset.skill = s.name;
+        if (usChecked[s.name]) li.classList.add('checked');
+        const ttype = s.type === 'voice' ? 'business' : s.type;
+        li.innerHTML =
+          '<span class="skill-type-dot ' + s.type + '"></span>' +
+          '<span class="who"><b>' + s.name + '</b>' +
+          '<i style="font-style:normal;margin-left:6px"><span class="skill-type-tag ' + s.type + '">' + s.type.toUpperCase() + '</span></i>' +
+          '</span>' +
+          '<span class="skill-agent-count' + (s.agents === 0 ? ' zero' : '') + '">' + s.agents + ' ag</span>' +
+          '<input type="checkbox"' + (usChecked[s.name] ? ' checked' : '') + ' aria-label="Select ' + s.name + '">';
+        listEl.appendChild(li);
+      });
+    }
+    const label = document.getElementById(countId);
+    label.textContent = rows.length === 0 ? '0 records' :
+      rows.length + (rows.length === 1 ? ' record' : ' records');
+    document.getElementById(allId).checked = rows.length > 0 && rows.every(s => usChecked[s.name]);
+  }
+
+  function renderSkills() {
+    renderSkillPane('assigned', document.getElementById('usAssignedList'), 'usAssignedPos', 'usAssignedAll');
+    renderSkillPane('available', document.getElementById('usAvailableList'), 'usAvailablePos', 'usAvailableAll');
+
+    const assignable = usAvailable.filter(s => usChecked[s.name]).length > 0;
+    const removable = usAssigned.filter(s => usChecked[s.name]).length > 0;
+
+    document.getElementById('usMoveRight').disabled = !removable;
+    document.getElementById('usMoveLeft').disabled = !assignable;
+    document.getElementById('usMoveOneRight').disabled = !removable;
+    document.getElementById('usMoveOneLeft').disabled = !assignable;
+    document.getElementById('usMoveAllRight').disabled = usAssigned.length === 0;
+    document.getElementById('usMoveAllLeft').disabled = usAvailable.length === 0;
+
+    document.getElementById('usAssignedCount').textContent = usAssigned.length;
+    document.getElementById('usAvailableCount').textContent = usAvailable.length;
+
+    const totalChecked = Object.keys(usChecked).filter(k => usChecked[k]).length;
+    const bar = document.getElementById('usSelectedBar');
+    if (totalChecked > 0) {
+      bar.hidden = false;
+      document.getElementById('usSelectedCount').textContent = totalChecked + (totalChecked === 1 ? ' skill selected' : ' skills selected');
+    } else {
+      bar.hidden = true;
+    }
+  }
+
+  [document.getElementById('usAssignedList'), document.getElementById('usAvailableList')].forEach(list => {
+    list.addEventListener('click', (e) => {
+      const li = e.target.closest('li[data-skill]');
+      if (!li) return;
+      usChecked[li.dataset.skill] = !usChecked[li.dataset.skill];
+      renderSkills();
+    });
+  });
+
+  document.querySelectorAll('.us-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.us-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      usTypeFilter = btn.dataset.uskill;
+      renderSkills();
+    });
+  });
+
+  document.getElementById('usMoveRight').addEventListener('click', () => {
+    const moving = usAssigned.filter(s => usChecked[s.name]);
+    usAssigned = usAssigned.filter(s => !usChecked[s.name]);
+    usAvailable = usAvailable.concat(moving);
+    moving.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usMoveLeft').addEventListener('click', () => {
+    const moving = usAvailable.filter(s => usChecked[s.name]);
+    usAvailable = usAvailable.filter(s => !usChecked[s.name]);
+    usAssigned = usAssigned.concat(moving);
+    moving.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usMoveOneRight').addEventListener('click', () => {
+    const moving = usAssigned.filter(s => usChecked[s.name]);
+    usAssigned = usAssigned.filter(s => !usChecked[s.name]);
+    usAvailable = usAvailable.concat(moving);
+    moving.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usMoveOneLeft').addEventListener('click', () => {
+    const moving = usAvailable.filter(s => usChecked[s.name]);
+    usAvailable = usAvailable.filter(s => !usChecked[s.name]);
+    usAssigned = usAssigned.concat(moving);
+    moving.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usMoveAllRight').addEventListener('click', () => {
+    const all = usAssigned.slice();
+    usAvailable = usAvailable.concat(usAssigned.filter(s => skillMatchesType(s)));
+    usAssigned = usAssigned.filter(s => !skillMatchesType(s));
+    all.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usMoveAllLeft').addEventListener('click', () => {
+    const all = usAvailable.slice();
+    usAssigned = usAssigned.concat(usAvailable.filter(s => skillMatchesType(s)));
+    usAvailable = usAvailable.filter(s => !skillMatchesType(s));
+    all.forEach(s => { usChecked[s.name] = false; });
+    renderSkills();
+  });
+
+  document.getElementById('usAssignedAll').addEventListener('change', (e) => {
+    usRowsFor('assigned').forEach(s => { usChecked[s.name] = e.target.checked; });
+    renderSkills();
+  });
+
+  document.getElementById('usAvailableAll').addEventListener('change', (e) => {
+    usRowsFor('available').forEach(s => { usChecked[s.name] = e.target.checked; });
+    renderSkills();
+  });
+
+  document.getElementById('usAssignedFilter').addEventListener('input', (e) => {
+    usFilter.assigned = e.target.value.trim().toLowerCase();
+    renderSkills();
+  });
+
+  document.getElementById('usAvailableFilter').addEventListener('input', (e) => {
+    usFilter.available = e.target.value.trim().toLowerCase();
+    renderSkills();
+  });
+
+  document.querySelectorAll('.sup-sort[data-ussort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const side = btn.dataset.ussort;
+      usSort[side] = -usSort[side];
+      btn.querySelector('.arrow').innerHTML = usSort[side] === 1 ? '&#9650;' : '&#9660;';
+      renderSkills();
+    });
+  });
+
+  document.getElementById('usClearSelection').addEventListener('click', () => {
+    usChecked = {};
+    renderSkills();
+  });
+
+  document.getElementById('usSave').addEventListener('click', () => {
+    userSkills[skillsUser.username] = usAssigned.map(s => s.name);
+    closeSkillsModal();
+  });
+
+  document.getElementById('usCancel').addEventListener('click', closeSkillsModal);
+  document.getElementById('usClose').addEventListener('click', closeSkillsModal);
+  skillsModal.addEventListener('click', (e) => {
+    if (e.target === skillsModal) closeSkillsModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!skillsModal.hidden && e.key === 'Escape') closeSkillsModal();
   });
 
   /* ---------- Toolbar dropdown filters ---------- */

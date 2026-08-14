@@ -3,15 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const schedules = [
     { name: 'Friday_Rush',            recurrence: 'Weekly',  status: 'failure',   statusLabel: 'Remove Failure',
       start: '03/24/2020 10:00 AM', lastExec: '',                  nextOp: 'Remove',  nextExec: '04/09/2022 06:48 PM', end: '03/24/2020',
+      enabled: false,
       skills: ['A_Sales', 'CumulusOutbound'], agents: ['rbarrows', 'sjeffers'] },
     { name: 'Weekend_Overflow',       recurrence: 'Weekly',  status: 'completed', statusLabel: 'Completed',
       start: '03/20/2020 08:00 AM', lastExec: '03/20/2020 08:01 AM', nextOp: 'Enable',  nextExec: '04/16/2022 08:00 AM', end: '',
+      enabled: true,
       skills: ['CumulusInbound'], agents: ['bbrown', 'csupervisor'] },
     { name: 'Holiday_Closure_2026',   recurrence: 'Once',    status: 'completed', statusLabel: 'Completed',
       start: '12/25/2025 12:00 AM', lastExec: '12/25/2025 12:00 AM', nextOp: 'Disable', nextExec: '',                    end: '12/25/2025',
+      enabled: true,
       skills: ['CumulusCB', 'CumulusTravel'], agents: ['hliang'] },
     { name: 'Cumulus_Monthly_Report', recurrence: 'Monthly', status: 'running',   statusLabel: 'Running',
       start: '08/01/2026 06:00 AM', lastExec: '',                  nextOp: 'Export',  nextExec: '09/01/2026 06:00 AM', end: '',
+      enabled: true,
       skills: ['CumulusUWF'], agents: ['jabracks', 'jopeters'] }
   ];
 
@@ -121,10 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
           '<svg class="icon"><use href="#icon-caret"/></svg></button></td>' +
         cols.map(c => {
           if (c.isActions) {
+            const enCls  = s.enabled ? 'sched-enable-btn enabled'  : 'sched-enable-btn disabled';
+            const enIcon = s.enabled ? 'icon-toggle' : 'icon-toggle';
+            const enTip  = s.enabled ? 'Disable schedule' : 'Enable schedule';
             return '<td class="col-actions">' +
-              '<button class="row-btn run-btn" title="Run now"><svg class="icon"><use href="#icon-play2"/></svg></button>' +
-              '<button class="row-btn edit-btn" title="Edit"><svg class="icon"><use href="#icon-pencil"/></svg></button>' +
-              '<button class="row-btn toggle-btn" title="Enable/Disable"><svg class="icon"><use href="#icon-lock"/></svg></button>' +
+              '<button class="row-btn sched-run-btn" title="Run now"><svg class="icon"><use href="#icon-play2"/></svg></button>' +
+              '<button class="row-btn edit-btn" title="Edit schedule"><svg class="icon"><use href="#icon-pencil"/></svg></button>' +
+              '<button class="row-btn ' + enCls + '" title="' + enTip + '"><svg class="icon"><use href="#' + enIcon + '"/></svg></button>' +
               '<button class="row-btn log-btn" title="Schedule audit"><svg class="icon"><use href="#icon-table"/></svg></button>' +
               '<button class="row-btn delete-btn" title="Delete"><svg class="icon"><use href="#icon-trash"/></svg></button>' +
             '</td>';
@@ -148,20 +155,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tr) return;
     const sched = schedules[tr.dataset.index];
 
-    if (e.target.closest('.run-btn')) {
-      alert('Running "' + sched.name + '" now.');
+    if (e.target.closest('.sched-run-btn')) {
+      openRunNowModal(sched);
       return;
     }
     if (e.target.closest('.edit-btn')) {
-      const name = prompt('Schedule name:', sched.name);
-      if (name !== null && name.trim() !== '') {
-        sched.name = name.trim();
-        renderBody();
-      }
+      openEditSchedModal(sched);
       return;
     }
-    if (e.target.closest('.toggle-btn')) {
-      alert((sched.nextOp === 'Disable' ? 'Disabling' : 'Enabling') + ' "' + sched.name + '".');
+    if (e.target.closest('.sched-enable-btn')) {
+      sched.enabled = !sched.enabled;
+      renderBody();
       return;
     }
     if (e.target.closest('.log-btn')) {
@@ -394,6 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
     csOnceRow.hidden = on;
     csPatternBox.hidden = !on;
     csRecurringDateRow.hidden = !on;
+    const removeDateRow = document.getElementById('csRemoveDateRow');
+    if (removeDateRow) removeDateRow.hidden = !on;
   }
 
   function updateEndFields() {
@@ -617,6 +623,302 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', (e) => {
     if (!createSchedModal.hidden && e.key === 'Escape') closeCreateSchedModal();
+  });
+
+  /* ---------- Run Now modal ---------- */
+  const runNowModal  = document.getElementById('runNowModal');
+  let runNowTarget   = null;
+
+  function openRunNowModal(sched) {
+    runNowTarget = sched;
+    document.getElementById('rnName').textContent       = sched.name;
+    document.getElementById('rnMeta').textContent       = 'Start: ' + (sched.start || '—');
+    document.getElementById('rnRecurrence').textContent = sched.recurrence;
+    document.getElementById('rnNextOp').textContent     = sched.nextOp || '—';
+    document.getElementById('rnSkills').textContent     = (sched.skills && sched.skills.length)
+      ? sched.skills.join(', ') : '—';
+    document.getElementById('rnAgents').textContent     = (sched.agents && sched.agents.length)
+      ? sched.agents.join(', ') : '—';
+    runNowModal.hidden = false;
+  }
+
+  function closeRunNowModal() {
+    runNowModal.hidden = true;
+    runNowTarget = null;
+  }
+
+  document.getElementById('runNowConfirm').addEventListener('click', () => {
+    if (!runNowTarget) return;
+    runNowTarget.status      = 'running';
+    runNowTarget.statusLabel = 'Running';
+    runNowTarget.lastExec    = new Date().toLocaleString('en-US', {
+      month: '2-digit', day: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: true
+    }).replace(',', '');
+    closeRunNowModal();
+    renderBody();
+  });
+
+  document.getElementById('runNowClose').addEventListener('click', closeRunNowModal);
+  document.getElementById('runNowCancel').addEventListener('click', closeRunNowModal);
+  runNowModal.addEventListener('click', (e) => { if (e.target === runNowModal) closeRunNowModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (!runNowModal.hidden && e.key === 'Escape') closeRunNowModal();
+  });
+
+  /* ---------- Edit Schedule modal ---------- */
+  const editSchedModal  = document.getElementById('editSchedModal');
+  const esName          = document.getElementById('esName');
+  const esDesc          = document.getElementById('esDesc');
+  const esOperation     = document.getElementById('esOperation');
+  const esRecurring     = document.getElementById('esRecurring');
+  const esOnceRow       = document.getElementById('esOnceRow');
+  const esPatternBox    = document.getElementById('esPatternBox');
+  const esRecurringDateRow = document.getElementById('esRecurringDateRow');
+  const esPattern       = document.getElementById('esPattern');
+  const esDays          = document.getElementById('esDays');
+  const esEndDate       = document.getElementById('esEndDate');
+  const esEndAfter      = document.getElementById('esEndAfter');
+  const esAddDate       = document.getElementById('esAddDate');
+  const esAddTime       = document.getElementById('esAddTime');
+  const esStartDate     = document.getElementById('esStartDate');
+  const esStartTime     = document.getElementById('esStartTime');
+  const esRemoveTime    = document.getElementById('esRemoveTime');
+  const esSummary       = document.getElementById('esSummary');
+  const esSkillList     = document.getElementById('esSkillList');
+  const esAgentList     = document.getElementById('esAgentList');
+
+  let esSkillChecked  = {};
+  let esAgentChecked  = {};
+  let esSkillFilter   = '';
+  let esAgentFilter   = '';
+  let editSchedTarget = null;
+
+  function isEsRecurring() {
+    return esRecurring.classList.contains('on');
+  }
+
+  function setEsRecurring(on) {
+    esRecurring.classList.toggle('on', on);
+    esRecurring.classList.toggle('off', !on);
+    esRecurring.setAttribute('aria-pressed', on);
+    esRecurring.innerHTML = on
+      ? '<svg class="icon"><use href="#icon-check"/></svg><span>ON</span>'
+      : '<svg class="icon"><use href="#icon-x-mark"/></svg><span>OFF</span>';
+    updateEsVisibility();
+    updateEsSummary();
+  }
+
+  function updateEsVisibility() {
+    const on = isEsRecurring();
+    esOnceRow.hidden        = on;
+    esPatternBox.hidden     = !on;
+    esRecurringDateRow.hidden = !on;
+  }
+
+  function updateEsEndFields() {
+    const type = editSchedModal.querySelector('input[name="esEndType"]:checked').value;
+    esEndDate.disabled  = type !== 'date';
+    esEndAfter.disabled = type !== 'after';
+  }
+
+  function updateEsSummary() {
+    const op = esOperation.value;
+    if (!isEsRecurring()) {
+      const addAt = (fmtDate(esAddDate.value) || 'its add date') + ' ' + (fmtTime(esAddTime.value) || '');
+      esSummary.textContent = 'Schedule will add the selected skills at ' + addAt.trim() + '.';
+      return;
+    }
+    const days     = [...esDays.querySelectorAll('input:checked')].map(cb => cb.value);
+    const dayText  = days.length ? days.join(', ') : 'no days selected';
+    const start    = fmtDate(esStartDate.value) || 'a start date';
+    const startT   = fmtTime(esStartTime.value) || 'its start time';
+    const removeT  = fmtTime(esRemoveTime.value);
+    const pattern  = esPattern.value.toLowerCase();
+    const endType  = editSchedModal.querySelector('input[name="esEndType"]:checked').value;
+    const until    = endType === 'date'  ? ('until ' + (fmtDate(esEndDate.value) || 'its end date'))
+                   : endType === 'after' ? ('for ' + (esEndAfter.value || 'N') + ' occurrences')
+                   : 'with no end date';
+    let action = 'add the selected skills on ' + dayText + ' at ' + startT;
+    if (op === 'addremove' && removeT) action += ' and remove them at ' + removeT;
+    else if (op === 'remove') action = 'remove the selected skills on ' + dayText + ' at ' + startT;
+    esSummary.textContent = 'Schedule will start running on ' + start + ', it will ' + action +
+      '. Runs ' + pattern + ' on ' + dayText + ' ' + until + '.';
+  }
+
+  function renderEsSkillList() {
+    const rows = CS_SKILLS.filter(s => s.name.toLowerCase().includes(esSkillFilter));
+    esSkillList.innerHTML = rows.map(s =>
+      '<li class="' + (esSkillChecked[s.name] ? 'checked' : '') + '" data-skill="' + s.name + '">' +
+        '<input type="checkbox"' + (esSkillChecked[s.name] ? ' checked' : '') + '>' +
+        '<span>' + s.name + '</span>' +
+        '<span class="badge">' + s.agents + '</span>' +
+      '</li>'
+    ).join('');
+    document.getElementById('esSkillCount').textContent = rows.length + ' records';
+  }
+
+  function renderEsAgentList() {
+    const rows = CS_AGENTS.filter(a => (a.user + ' ' + a.name).toLowerCase().includes(esAgentFilter));
+    esAgentList.innerHTML = rows.map(a =>
+      '<li class="' + (esAgentChecked[a.user] ? 'checked' : '') + '" data-agent="' + a.user + '">' +
+        '<input type="checkbox"' + (esAgentChecked[a.user] ? ' checked' : '') + '>' +
+        '<span>' + a.user + ' - ' + a.name + '</span>' +
+      '</li>'
+    ).join('');
+    document.getElementById('esAgentCount').textContent = rows.length + ' records';
+  }
+
+  esSkillList.addEventListener('click', (e) => {
+    const li = e.target.closest('li[data-skill]');
+    if (!li) return;
+    esSkillChecked[li.dataset.skill] = !esSkillChecked[li.dataset.skill];
+    renderEsSkillList();
+  });
+
+  esAgentList.addEventListener('click', (e) => {
+    const li = e.target.closest('li[data-agent]');
+    if (!li) return;
+    esAgentChecked[li.dataset.agent] = !esAgentChecked[li.dataset.agent];
+    renderEsAgentList();
+  });
+
+  document.getElementById('esSkillSearch').addEventListener('input', (e) => {
+    esSkillFilter = e.target.value.trim().toLowerCase();
+    renderEsSkillList();
+  });
+
+  document.getElementById('esAgentSearch').addEventListener('input', (e) => {
+    esAgentFilter = e.target.value.trim().toLowerCase();
+    renderEsAgentList();
+  });
+
+  esRecurring.addEventListener('click', () => setEsRecurring(!isEsRecurring()));
+  esOperation.addEventListener('change', updateEsSummary);
+  esPattern.addEventListener('change', updateEsSummary);
+  esDays.addEventListener('change', updateEsSummary);
+  esStartDate.addEventListener('input', updateEsSummary);
+  esStartTime.addEventListener('input', updateEsSummary);
+  esRemoveTime.addEventListener('input', updateEsSummary);
+  esAddDate.addEventListener('input', updateEsSummary);
+  esAddTime.addEventListener('input', updateEsSummary);
+  editSchedModal.querySelectorAll('input[name="esEndType"]').forEach(r => {
+    r.addEventListener('change', () => { updateEsEndFields(); updateEsSummary(); });
+  });
+
+  function isoFromDisplay(dtStr) {
+    // "MM/DD/YYYY HH:MM AM/PM" -> "YYYY-MM-DD" and "HH:MM" (24h)
+    if (!dtStr) return { date: '', time: '' };
+    const parts = dtStr.trim().split(' ');
+    const datePart = parts[0] || '';
+    const [mm, dd, yyyy] = datePart.split('/');
+    const isoDate = (yyyy && mm && dd) ? yyyy + '-' + mm.padStart(2,'0') + '-' + dd.padStart(2,'0') : '';
+    let isoTime = '';
+    if (parts[1] && parts[2]) {
+      let [hh, min] = parts[1].split(':').map(Number);
+      const ampm = parts[2].toUpperCase();
+      if (ampm === 'PM' && hh !== 12) hh += 12;
+      if (ampm === 'AM' && hh === 12) hh = 0;
+      isoTime = String(hh).padStart(2,'0') + ':' + String(min).padStart(2,'0');
+    }
+    return { date: isoDate, time: isoTime };
+  }
+
+  function openEditSchedModal(sched) {
+    editSchedTarget = sched;
+    document.getElementById('editSchedTitle').textContent = 'Edit Schedule — ' + sched.name;
+
+    esName.value = sched.name;
+    esName.classList.remove('invalid');
+    esDesc.value = '';
+
+    const recurring = sched.recurrence !== 'Once';
+    setEsRecurring(recurring);
+
+    esOperation.value = 'addremove';
+
+    const startParsed = isoFromDisplay(sched.start);
+    if (recurring) {
+      esPattern.value   = sched.recurrence;
+      esStartDate.value = startParsed.date;
+      esStartTime.value = startParsed.time;
+      esRemoveTime.value = '';
+      editSchedModal.querySelector('input[name="esEndType"][value="date"]').checked = true;
+      esEndDate.value  = sched.end ? (() => {
+        const [mm,dd,yyyy] = sched.end.split('/');
+        return yyyy + '-' + mm.padStart(2,'0') + '-' + dd.padStart(2,'0');
+      })() : '';
+      esEndAfter.value = 10;
+      updateEsEndFields();
+    } else {
+      esAddDate.value = startParsed.date;
+      esAddTime.value = startParsed.time;
+    }
+
+    esSkillChecked = {};
+    (sched.skills || []).forEach(sk => { esSkillChecked[sk] = true; });
+    esAgentChecked = {};
+    (sched.agents || []).forEach(ag => { esAgentChecked[ag] = true; });
+    esSkillFilter = '';
+    esAgentFilter = '';
+    document.getElementById('esSkillSearch').value = '';
+    document.getElementById('esAgentSearch').value = '';
+
+    renderEsSkillList();
+    renderEsAgentList();
+    updateEsSummary();
+
+    editSchedModal.hidden = false;
+    esName.focus();
+  }
+
+  function closeEditSchedModal() {
+    editSchedModal.hidden = true;
+    editSchedTarget = null;
+  }
+
+  function saveEditSchedModal() {
+    const name = esName.value.trim();
+    if (name === '') {
+      esName.classList.add('invalid');
+      esName.focus();
+      return;
+    }
+
+    const recurring       = isEsRecurring();
+    const recurrenceLabel = recurring ? esPattern.value : 'Once';
+    const opLabel         = esOperation.value === 'add' ? 'Add'
+                          : esOperation.value === 'remove' ? 'Remove' : 'Add/Remove';
+
+    let startStr, endStr;
+    if (recurring) {
+      startStr = fmtDate(esStartDate.value) + (esStartTime.value ? ' ' + fmtTime(esStartTime.value) : '');
+      const endType = editSchedModal.querySelector('input[name="esEndType"]:checked').value;
+      endStr = endType === 'date' ? fmtDate(esEndDate.value) : '';
+    } else {
+      startStr = fmtDate(esAddDate.value) + (esAddTime.value ? ' ' + fmtTime(esAddTime.value) : '');
+      endStr   = '';
+    }
+
+    editSchedTarget.name        = name;
+    editSchedTarget.recurrence  = recurrenceLabel;
+    editSchedTarget.nextOp      = opLabel;
+    editSchedTarget.start       = startStr;
+    editSchedTarget.end         = endStr;
+    editSchedTarget.skills      = Object.keys(esSkillChecked).filter(k => esSkillChecked[k]);
+    editSchedTarget.agents      = Object.keys(esAgentChecked).filter(k => esAgentChecked[k]);
+
+    closeEditSchedModal();
+    renderBody();
+  }
+
+  document.getElementById('editSchedSave').addEventListener('click', saveEditSchedModal);
+  document.getElementById('editSchedCancel').addEventListener('click', closeEditSchedModal);
+  document.getElementById('editSchedClose').addEventListener('click', closeEditSchedModal);
+  editSchedModal.addEventListener('click', (e) => { if (e.target === editSchedModal) closeEditSchedModal(); });
+  esName.addEventListener('input', () => esName.classList.remove('invalid'));
+  document.addEventListener('keydown', (e) => {
+    if (!editSchedModal.hidden && e.key === 'Escape') closeEditSchedModal();
   });
 
   /* ---------- Schedule audit dialog ---------- */

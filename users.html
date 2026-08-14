@@ -637,6 +637,263 @@
         </div>
       </div>
 
+      <!-- Reset Password dialog -->
+      <div class="modal-overlay" id="resetPasswordModal" hidden>
+        <div class="modal rpw-modal" role="dialog" aria-modal="true" aria-labelledby="rpwTitle">
+          <div class="modal-head">
+            <div class="rpw-head-left">
+              <div class="rpw-icon-badge">
+                <svg class="icon"><use href="#icon-key"/></svg>
+              </div>
+              <div>
+                <span class="modal-title" id="rpwTitle">Reset Password</span>
+                <div class="rpw-subtitle" id="rpwSubtitle"></div>
+              </div>
+            </div>
+            <button class="modal-close" id="rpwClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+
+          <div class="modal-body">
+          <div class="rpw-user-card">
+            <div class="rpw-avatar" id="rpwAvatar"></div>
+            <div class="rpw-user-info">
+              <div class="rpw-user-name" id="rpwUserName"></div>
+              <div class="rpw-user-meta">
+                <span class="rpw-meta-item"><svg class="icon"><use href="#icon-user"/></svg><span id="rpwUserUsername"></span></span>
+                <span class="rpw-meta-item"><svg class="icon"><use href="#icon-building"/></svg><span id="rpwUserTeam"></span></span>
+              </div>
+            </div>
+            <span class="rpw-status-pill" id="rpwUserStatus"></span>
+          </div>
+
+          <div class="rpw-section">
+            <label class="rpw-radio-option">
+              <input type="radio" name="rpwMode" value="auto" checked>
+              <div class="rpw-radio-content">
+                <div class="rpw-radio-title">Auto-generate password</div>
+                <div class="rpw-radio-desc">A strong, random password will be generated automatically.</div>
+              </div>
+            </label>
+            <label class="rpw-radio-option">
+              <input type="radio" name="rpwMode" value="manual">
+              <div class="rpw-radio-content">
+                <div class="rpw-radio-title">Set password manually</div>
+                <div class="rpw-radio-desc">Choose your own password for this user.</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="rpw-section rpw-manual-section" id="rpwManualSection" hidden>
+            <div class="rpw-field">
+              <label for="rpwNewPass">New Password</label>
+              <div class="rpw-pass-wrap">
+                <input type="password" id="rpwNewPass" class="rpw-input" placeholder="Enter new password" autocomplete="off">
+                <button type="button" class="rpw-eye" id="rpwToggleNew" title="Show/Hide password" aria-label="Toggle password visibility">
+                  <svg class="icon"><use href="#icon-eye"/></svg>
+                </button>
+              </div>
+              <div class="rpw-strength">
+                <div class="rpw-strength-bars"><span></span><span></span><span></span><span></span></div>
+                <span class="rpw-strength-label" id="rpwStrengthLabel"></span>
+              </div>
+            </div>
+            <div class="rpw-field">
+              <label for="rpwConfirmPass">Confirm Password</label>
+              <div class="rpw-pass-wrap">
+                <input type="password" id="rpwConfirmPass" class="rpw-input" placeholder="Confirm new password" autocomplete="off">
+                <button type="button" class="rpw-eye" id="rpwToggleConfirm" title="Show/Hide password" aria-label="Toggle password visibility">
+                  <svg class="icon"><use href="#icon-eye"/></svg>
+                </button>
+              </div>
+              <div class="rpw-match" id="rpwMatch"></div>
+            </div>
+            <div class="rpw-req-list">
+              <div class="rpw-req" data-req="length"><svg class="icon"><use href="#icon-circle"/></svg>At least 8 characters</div>
+              <div class="rpw-req" data-req="upper"><svg class="icon"><use href="#icon-circle"/></svg>At least one uppercase letter</div>
+              <div class="rpw-req" data-req="lower"><svg class="icon"><use href="#icon-circle"/></svg>At least one lowercase letter</div>
+              <div class="rpw-req" data-req="num"><svg class="icon"><use href="#icon-circle"/></svg>At least one number</div>
+              <div class="rpw-req" data-req="spec"><svg class="icon"><use href="#icon-circle"/></svg>At least one special character</div>
+            </div>
+          </div>
+
+          <div class="rpw-section rpw-auto-section" id="rpwAutoSection">
+            <div class="rpw-generated-box" id="rpwGeneratedBox">
+              <div class="rpw-gen-label">Generated Password</div>
+              <div class="rpw-gen-row">
+                <span class="rpw-gen-pass" id="rpwGenPass">************</span>
+                <button type="button" class="rpw-gen-copy" id="rpwCopyGen" title="Copy to clipboard" aria-label="Copy password">
+                  <svg class="icon"><use href="#icon-copy"/></svg>
+                </button>
+                <button type="button" class="rpw-gen-refresh" id="rpwRefreshGen" title="Generate new password" aria-label="Regenerate password">
+                  <svg class="icon"><use href="#icon-refresh"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="rpw-options">
+            <label class="rpw-check-option">
+              <input type="checkbox" id="rpwForceChange" checked>
+              <span>Force user to change password on next login</span>
+            </label>
+            <label class="rpw-check-option">
+              <input type="checkbox" id="rpwSendEmail" checked>
+              <span>Send password reset notification to user email</span>
+            </label>
+          </div>
+
+          <div class="rpw-toast" id="rpwToast" hidden>
+            <svg class="icon"><use href="#icon-check-circle"/></svg>
+            <span id="rpwToastText"></span>
+          </div>
+          </div>
+
+          <div class="modal-foot">
+            <button class="modal-btn save" id="rpwSave">Reset Password</button>
+            <button class="modal-btn" id="rpwCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Skills dialog -->
+      <div class="modal-overlay" id="skillsModal" hidden>
+        <div class="modal xwide us-modal" role="dialog" aria-modal="true" aria-labelledby="usTitle">
+          <div class="modal-head">
+            <div class="us-head-left">
+              <div class="us-icon-badge">
+                <svg class="icon"><use href="#icon-target"/></svg>
+              </div>
+              <div>
+                <span class="modal-title" id="usTitle">Manage Skills</span>
+                <div class="us-subtitle" id="usSubtitle"></div>
+              </div>
+            </div>
+            <button class="modal-close" id="usClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+
+          <div class="modal-body" style="padding: 0 0 14px;">
+
+          <div class="us-user-strip">
+            <div class="us-user-block">
+              <div class="us-avatar" id="usAvatar"></div>
+              <div class="us-user-info">
+                <div class="us-user-name" id="usUserName"></div>
+                <div class="us-user-meta">
+                  <svg class="icon"><use href="#icon-user"/></svg>
+                  <span id="usUserUsername"></span>
+                  <span class="us-meta-sep">&middot;</span>
+                  <svg class="icon"><use href="#icon-building"/></svg>
+                  <span id="usUserTeam"></span>
+                </div>
+              </div>
+            </div>
+            <div class="us-stat-block">
+              <div class="us-stat">
+                <div class="us-stat-num" id="usAssignedCount">0</div>
+                <div class="us-stat-label">Assigned</div>
+              </div>
+              <div class="us-stat-divider"></div>
+              <div class="us-stat">
+                <div class="us-stat-num" id="usAvailableCount">0</div>
+                <div class="us-stat-label">Available</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="us-type-filter">
+            <button class="us-type-btn active" data-uskill="all">All</button>
+            <button class="us-type-btn" data-uskill="voice"><span class="us-dot voice"></span>Cisco Voice</button>
+            <button class="us-type-btn" data-uskill="chat"><span class="us-dot chat"></span>Chat</button>
+            <button class="us-type-btn" data-uskill="email"><span class="us-dot email"></span>Email</button>
+            <button class="us-type-btn" data-uskill="cim"><span class="us-dot cim"></span>CIM</button>
+            <button class="us-type-btn" data-uskill="system"><span class="us-dot system"></span>System</button>
+          </div>
+
+          <div class="sup-panes us-panes">
+            <div class="sup-pane us-pane">
+              <div class="sup-pane-head">
+                <span class="sup-pane-title us-pane-title">
+                  <svg class="icon"><use href="#icon-check-circle"/></svg>
+                  Assigned Skills
+                </span>
+                <span class="sup-filter">
+                  <svg class="icon"><use href="#icon-search"/></svg>
+                  <input type="text" id="usAssignedFilter" placeholder="Search assigned" aria-label="Filter assigned skills">
+                </span>
+              </div>
+              <div class="sup-subhead">
+                <button class="sup-sort" data-ussort="assigned"><span class="arrow">&#9650;</span>Sort by Name</button>
+                <span class="right">
+                  <span id="usAssignedPos">0 records</span>
+                  <span>Select All</span>
+                  <input type="checkbox" id="usAssignedAll" aria-label="Select all assigned skills">
+                </span>
+              </div>
+              <div class="sup-move us-move">
+                <button id="usMoveRight" title="Remove selected skills">&rarr;</button>
+                <div class="us-move-label">Remove</div>
+              </div>
+              <ul class="sup-list us-list assigned" id="usAssignedList"></ul>
+            </div>
+
+            <div class="us-pane-middle">
+              <div class="us-center-actions">
+                <button class="us-center-btn" id="usMoveAllLeft" title="Assign all available">
+                  <span>&laquo;</span>
+                </button>
+                <button class="us-center-btn" id="usMoveOneLeft" title="Assign selected">
+                  <span>&lsaquo;</span>
+                </button>
+                <div class="us-center-label">Assign</div>
+                <button class="us-center-btn" id="usMoveOneRight" title="Remove selected">
+                  <span>&rsaquo;</span>
+                </button>
+                <button class="us-center-btn" id="usMoveAllRight" title="Remove all assigned">
+                  <span>&raquo;</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="sup-pane us-pane">
+              <div class="sup-pane-head">
+                <span class="sup-pane-title us-pane-title">
+                  <svg class="icon"><use href="#icon-list"/></svg>
+                  Available Skills
+                </span>
+                <span class="sup-filter">
+                  <svg class="icon"><use href="#icon-search"/></svg>
+                  <input type="text" id="usAvailableFilter" placeholder="Search available" aria-label="Filter available skills">
+                </span>
+              </div>
+              <div class="sup-subhead">
+                <button class="sup-sort" data-ussort="available"><span class="arrow">&#9650;</span>Sort by Name</button>
+                <span class="right">
+                  <span id="usAvailablePos">0 records</span>
+                  <span>Select All</span>
+                  <input type="checkbox" id="usAvailableAll" aria-label="Select all available skills">
+                </span>
+              </div>
+              <div class="sup-move us-move">
+                <button id="usMoveLeft" title="Assign selected skills">&larr;</button>
+                <div class="us-move-label">Assign</div>
+              </div>
+              <ul class="sup-list us-list" id="usAvailableList"></ul>
+            </div>
+          </div>
+
+          <div class="us-selected-bar" id="usSelectedBar" hidden>
+            <span id="usSelectedCount">0 skills selected</span>
+            <button class="us-clear-selection" id="usClearSelection">Clear Selection</button>
+          </div>
+          </div>
+
+          <div class="modal-foot">
+            <button class="modal-btn save" id="usSave">Save Changes</button>
+            <button class="modal-btn" id="usCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 

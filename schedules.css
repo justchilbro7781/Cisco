@@ -382,3 +382,177 @@ textarea.cs-field {
   color: #0a7ba8;
   font-weight: 600;
 }
+
+/* ---------- Row action buttons (Run Now, Edit, Enable/Disable) ---------- */
+
+/* Run Now — green tint on hover to signal "execute" action */
+.sched-run-btn:hover {
+  background: #e6f9ee !important;
+  color: #2e7d4a !important;
+}
+
+/* Enable/Disable — green when enabled, muted gray when disabled */
+.sched-enable-btn {
+  position: relative;
+}
+
+.sched-enable-btn.enabled {
+  color: #2e9e4f;
+}
+
+.sched-enable-btn.enabled:hover {
+  background: #e8f6ec !important;
+  color: #2e7d4a !important;
+}
+
+.sched-enable-btn.disabled {
+  color: #b0b8bf;
+}
+
+.sched-enable-btn.disabled:hover {
+  background: #f1f3f5 !important;
+  color: #6b7780 !important;
+}
+
+/* Tooltip-style state label that appears on hover */
+.sched-enable-btn::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 3px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.sched-enable-btn.enabled::after {
+  background: #e8f6ec;
+  color: #2e7d4a;
+  border: 1px solid #b6e2c5;
+}
+
+.sched-enable-btn.disabled::after {
+  background: #f1f3f5;
+  color: #6b7780;
+  border: 1px solid #d5d9dd;
+}
+
+.sched-enable-btn:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Run Now modal ---------- */
+.rn-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 20px 22px 10px;
+}
+
+.rn-icon-wrap {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #eaf7fd;
+  border: 2px solid #b0dff0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.rn-play-icon {
+  width: 22px;
+  height: 22px;
+  color: #049fd9;
+  fill: #049fd9;
+  stroke: none;
+}
+
+.rn-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rn-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 3px;
+  word-break: break-all;
+}
+
+.rn-meta {
+  font-size: 12px;
+  color: #6b7780;
+  margin-bottom: 14px;
+}
+
+.rn-rows {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.rn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rn-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9aa5ad;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.rn-val {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+
+.rn-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  background: #fdf3e2;
+  border: 1px solid #f5d89a;
+  border-radius: 5px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  color: #7a4e12;
+  line-height: 1.45;
+}
+
+.rn-warn .icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: #c87a10;
+  margin-top: 1px;
+}
+
+.rn-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rn-confirm-btn .icon {
+  width: 13px;
+  height: 13px;
+  fill: #fff;
+  stroke: none;
+}

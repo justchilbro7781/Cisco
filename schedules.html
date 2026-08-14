@@ -283,7 +283,7 @@
                     <input type="time" class="cs-field" id="csAddTime">
                   </div>
                 </div>
-                <div class="cs-row">
+                <div class="cs-row" id="csRemoveDateRow">
                   <label for="csRemoveDate">Remove Date/Time</label>
                   <div class="cs-time-row">
                     <input type="date" class="cs-field" id="csRemoveDate">
@@ -377,6 +377,183 @@
           <div class="modal-foot">
             <button class="modal-btn save" id="createSchedSave">Save</button>
             <button class="modal-btn" id="createSchedCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Run Now confirmation dialog -->
+      <div class="modal-overlay" id="runNowModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="runNowTitle" style="max-width:480px">
+          <div class="modal-head">
+            <span class="modal-title" id="runNowTitle">Run Schedule Now</span>
+            <button class="modal-close" id="runNowClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+          <div class="rn-body">
+            <div class="rn-icon-wrap">
+              <svg class="icon rn-play-icon"><use href="#icon-play2"/></svg>
+            </div>
+            <div class="rn-info">
+              <div class="rn-name" id="rnName"></div>
+              <div class="rn-meta" id="rnMeta"></div>
+              <div class="rn-rows">
+                <div class="rn-row">
+                  <span class="rn-label">Recurrence</span>
+                  <span class="rn-val" id="rnRecurrence"></span>
+                </div>
+                <div class="rn-row">
+                  <span class="rn-label">Next Operation</span>
+                  <span class="rn-val" id="rnNextOp"></span>
+                </div>
+                <div class="rn-row">
+                  <span class="rn-label">Skills</span>
+                  <span class="rn-val" id="rnSkills"></span>
+                </div>
+                <div class="rn-row">
+                  <span class="rn-label">Agents</span>
+                  <span class="rn-val" id="rnAgents"></span>
+                </div>
+              </div>
+              <div class="rn-warn">
+                <svg class="icon"><use href="#icon-warning"/></svg>
+                This will immediately execute the schedule outside its normal schedule. Are you sure?
+              </div>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button class="modal-btn save rn-confirm-btn" id="runNowConfirm">
+              <svg class="icon"><use href="#icon-play2"/></svg> Run Now
+            </button>
+            <button class="modal-btn" id="runNowCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Schedule dialog -->
+      <div class="modal-overlay cs-modal" id="editSchedModal" hidden>
+        <div class="modal xwide" role="dialog" aria-modal="true" aria-labelledby="editSchedTitle">
+          <div class="modal-head">
+            <span class="modal-title" id="editSchedTitle">Edit Schedule</span>
+            <button class="modal-close" id="editSchedClose" title="Close" aria-label="Close">&times;</button>
+          </div>
+
+          <div class="cs-body">
+            <div class="cs-left">
+              <div class="cs-row">
+                <label for="esName">Name</label>
+                <input type="text" class="cs-field" id="esName">
+              </div>
+              <div class="cs-row">
+                <label for="esDesc">Description</label>
+                <textarea class="cs-field" id="esDesc" placeholder="Optional"></textarea>
+              </div>
+              <div class="cs-two-col">
+                <div class="cs-row">
+                  <label for="esOperation">Operation</label>
+                  <select class="cs-field" id="esOperation">
+                    <option value="add">Add</option>
+                    <option value="remove">Remove</option>
+                    <option value="addremove" selected>Add Remove</option>
+                  </select>
+                </div>
+                <div class="cs-row cs-recurring-row">
+                  <label for="esRecurring">Recurring</label>
+                  <button class="cs-switch2 off" id="esRecurring" aria-pressed="false">
+                    <svg class="icon"><use href="#icon-x-mark"/></svg><span>OFF</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="cs-two-col" id="esOnceRow">
+                <div class="cs-row">
+                  <label for="esAddDate">Add Date/Time</label>
+                  <div class="cs-time-row">
+                    <input type="date" class="cs-field" id="esAddDate">
+                    <input type="time" class="cs-field" id="esAddTime">
+                  </div>
+                </div>
+              </div>
+
+              <div class="cs-pattern-box" id="esPatternBox" hidden>
+                <div class="cs-pattern-title">Recurrence Pattern</div>
+                <div class="cs-row">
+                  <label for="esPattern">Pattern</label>
+                  <select class="cs-field" id="esPattern">
+                    <option>Daily</option>
+                    <option selected>Weekly</option>
+                    <option>Monthly</option>
+                  </select>
+                </div>
+                <div class="cs-days" id="esDays">
+                  <label class="cs-day-label"><input type="checkbox" value="Sun">Sun</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Mon" checked>Mon</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Tues" checked>Tues</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Wed">Wed</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Thurs">Thurs</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Fri">Fri</label>
+                  <label class="cs-day-label"><input type="checkbox" value="Sat">Sat</label>
+                </div>
+                <div class="cs-end-group" id="esEndGroup">
+                  <label class="cs-radio-label">
+                    <input type="radio" name="esEndType" value="date" checked>End Date
+                  </label>
+                  <span class="cs-end-date-wrap">
+                    <input type="date" class="cs-end-date-field" id="esEndDate">
+                    <svg class="icon"><use href="#icon-calendar2"/></svg>
+                  </span>
+                  <label class="cs-radio-label">
+                    <input type="radio" name="esEndType" value="after">End After
+                  </label>
+                  <input type="number" class="cs-end-date-field" id="esEndAfter" min="1" value="10" disabled style="width:70px">
+                  <label class="cs-radio-label">
+                    <input type="radio" name="esEndType" value="never">No End Date
+                  </label>
+                </div>
+              </div>
+
+              <div class="cs-two-col" id="esRecurringDateRow" hidden>
+                <div class="cs-row">
+                  <label for="esStartDate">Start Date/Time</label>
+                  <div class="cs-time-row">
+                    <input type="date" class="cs-field" id="esStartDate">
+                    <input type="time" class="cs-field" id="esStartTime">
+                  </div>
+                </div>
+                <div class="cs-row">
+                  <label for="esRemoveTime">Remove Time</label>
+                  <input type="time" class="cs-field" id="esRemoveTime">
+                </div>
+              </div>
+
+              <div class="cs-summary" id="esSummary"></div>
+            </div>
+
+            <div class="cs-right">
+              <div class="cs-pane">
+                <div class="cs-pane-head">
+                  <span>Skill Name</span>
+                  <span class="cs-pane-count" id="esSkillCount">0 records</span>
+                </div>
+                <div class="cs-pane-search">
+                  <input type="text" id="esSkillSearch" placeholder="Filter">
+                </div>
+                <ul class="cs-pane-list" id="esSkillList"></ul>
+              </div>
+              <div class="cs-pane">
+                <div class="cs-pane-head">
+                  <span>Agent Name</span>
+                  <span class="cs-pane-count" id="esAgentCount">0 records</span>
+                </div>
+                <div class="cs-pane-search">
+                  <input type="text" id="esAgentSearch" placeholder="Filter">
+                </div>
+                <ul class="cs-pane-list" id="esAgentList"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-foot">
+            <button class="modal-btn save" id="editSchedSave">Save</button>
+            <button class="modal-btn" id="editSchedCancel">Cancel</button>
           </div>
         </div>
       </div>
