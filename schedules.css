@@ -36,40 +36,36 @@
 }
 
 /* ---------- Create Schedule dialog ---------- */
+
+/* ---------- Create Schedule dialog ---------- */
 .cs-modal .modal {
   max-width: 1040px;
   width: 96vw;
 }
-
 .cs-body {
   display: flex;
   gap: 22px;
   padding: 16px 22px;
 }
-
 .cs-left {
   width: 340px;
   flex-shrink: 0;
 }
-
 .cs-right {
   flex: 1;
   min-width: 0;
   display: flex;
   gap: 14px;
 }
-
 .cs-row {
   margin-bottom: 12px;
 }
-
 .cs-row label {
   display: block;
   font-size: 11.5px;
   color: #6b7780;
   margin-bottom: 4px;
 }
-
 .cs-field {
   width: 100%;
   border: 1px solid #c9c9c9;
@@ -81,34 +77,28 @@
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-
 textarea.cs-field {
   min-height: 40px;
   resize: vertical;
 }
-
 .cs-field:focus {
   border-color: #049fd9;
   box-shadow: 0 0 0 3px rgba(4, 159, 217, 0.12);
 }
-
 .cs-field.invalid {
   border-color: #d0454c;
   box-shadow: 0 0 0 3px rgba(208, 69, 76, 0.12);
 }
-
 .cs-recurring-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
 .cs-recurring-row label {
   margin-bottom: 0;
   font-size: 13px;
   color: #444;
 }
-
 .cs-switch2 {
   display: inline-flex;
   align-items: center;
@@ -125,42 +115,34 @@ textarea.cs-field {
   flex-shrink: 0;
   transition: all 0.15s ease;
 }
-
 .cs-switch2 .icon {
   width: 12px;
   height: 12px;
 }
-
 .cs-switch2.off .icon {
   color: #c9484f;
 }
-
 .cs-switch2.off:hover {
   border-color: #c9484f;
   color: #c9484f;
 }
-
 .cs-switch2.on {
   background: #eaf7fd;
   border-color: #049fd9;
   color: #0a7ba8;
 }
-
 .cs-switch2.on .icon {
   color: #049fd9;
 }
-
 .cs-pattern-box {
   border: 1px solid #e3e3e3;
   border-radius: 6px;
   padding: 12px 14px;
   margin-top: 4px;
 }
-
 .cs-pattern-box[hidden] {
   display: none;
 }
-
 .cs-pattern-title {
   font-size: 12px;
   font-weight: 700;
@@ -169,14 +151,12 @@ textarea.cs-field {
   letter-spacing: 0.4px;
   margin-bottom: 10px;
 }
-
 .cs-days {
   display: flex;
   flex-wrap: wrap;
   gap: 6px 12px;
   margin-bottom: 10px;
 }
-
 .cs-day-label {
   display: inline-flex;
   align-items: center;
@@ -185,11 +165,9 @@ textarea.cs-field {
   color: #444;
   cursor: pointer;
 }
-
 .cs-day-label input {
   cursor: pointer;
 }
-
 .cs-end-group {
   display: flex;
   align-items: center;
@@ -197,7 +175,6 @@ textarea.cs-field {
   gap: 14px;
   margin-bottom: 10px;
 }
-
 .cs-radio-label {
   display: inline-flex;
   align-items: center;
@@ -207,17 +184,14 @@ textarea.cs-field {
   cursor: pointer;
   white-space: nowrap;
 }
-
 .cs-radio-label input {
   cursor: pointer;
 }
-
 .cs-end-date-wrap {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
-
 .cs-end-date-wrap .icon {
   position: absolute;
   right: 7px;
@@ -226,11 +200,9 @@ textarea.cs-field {
   color: #9aa5ad;
   pointer-events: none;
 }
-
 .cs-end-date-wrap .cs-end-date-field {
   padding-right: 24px;
 }
-
 .cs-end-date-field {
   width: 130px;
   height: 26px;
@@ -242,37 +214,30 @@ textarea.cs-field {
   color: #333;
   outline: none;
 }
-
 .cs-end-date-field:disabled {
   background: #f2f3f4;
   color: #b7bfc5;
 }
-
 .cs-two-col {
   display: flex;
   gap: 12px;
   margin-bottom: 4px;
 }
-
 .cs-two-col[hidden] {
   display: none;
 }
-
 .cs-two-col .cs-row {
   flex: 1;
   margin-bottom: 0;
 }
-
 .cs-time-row {
   display: flex;
   gap: 6px;
 }
-
 .cs-time-row .cs-field {
   flex: 1;
   min-width: 0;
 }
-
 .cs-summary {
   margin-top: 12px;
   padding: 9px 11px;
@@ -284,7 +249,6 @@ textarea.cs-field {
   color: #55606a;
   line-height: 1.6;
 }
-
 .cs-pane {
   flex: 1;
   min-width: 0;
@@ -294,7 +258,6 @@ textarea.cs-field {
   border-radius: 6px;
   overflow: hidden;
 }
-
 .cs-pane-head {
   display: flex;
   align-items: center;
@@ -306,18 +269,15 @@ textarea.cs-field {
   font-weight: 600;
   color: #444;
 }
-
 .cs-pane-count {
   font-weight: 400;
   color: #9aa5ad;
   font-size: 11px;
 }
-
 .cs-pane-search {
   padding: 6px 8px;
   border-bottom: 1px solid #f0f0f0;
 }
-
 .cs-pane-search input {
   width: 100%;
   height: 22px;
@@ -328,7 +288,6 @@ textarea.cs-field {
   font-family: inherit;
   outline: none;
 }
-
 .cs-pane-list {
   list-style: none;
   flex: 1;
@@ -336,16 +295,13 @@ textarea.cs-field {
   max-height: 280px;
   overflow-y: auto;
 }
-
 .cs-pane-list::-webkit-scrollbar {
   width: 7px;
 }
-
 .cs-pane-list::-webkit-scrollbar-thumb {
   background: #d6d6d6;
   border-radius: 4px;
 }
-
 .cs-pane-list li {
   display: flex;
   align-items: center;
@@ -356,11 +312,9 @@ textarea.cs-field {
   color: #444;
   cursor: pointer;
 }
-
 .cs-pane-list li:hover {
   background: #f6fbfe;
 }
-
 .cs-pane-list li .badge {
   margin-left: auto;
   flex-shrink: 0;
@@ -376,7 +330,6 @@ textarea.cs-field {
   justify-content: center;
   padding: 0 4px;
 }
-
 .cs-pane-list li.checked {
   background: #eaf7fd;
   color: #0a7ba8;
@@ -555,4 +508,70 @@ textarea.cs-field {
   height: 13px;
   fill: #fff;
   stroke: none;
+}
+
+/* ==========================================================================
+   RESPONSIVE — schedules.css
+   Breakpoints: ≤ 1024px, ≤ 768px, ≤ 480px
+   ========================================================================== */
+
+/* ---- ≤ 1024px ---- */
+@media (max-width: 1024px) {
+  .cs-left  { width: 280px; }
+  .cs-pane-list { min-height: 180px; max-height: 220px; }
+}
+
+/* ---- ≤ 768px ---- */
+@media (max-width: 768px) {
+
+  .cs-body {
+    flex-direction: column;
+    gap: 14px;
+    padding: 12px 14px;
+    overflow-y: auto;
+    max-height: calc(90vh - 110px);
+  }
+
+  .cs-left  { width: 100%; }
+  .cs-right { flex-direction: row; gap: 10px; }
+
+  .cs-two-col { flex-direction: column; gap: 8px; }
+  .cs-time-row { gap: 8px; }
+  .cs-time-row .cs-field { font-size: 12px; }
+  .cs-end-group { gap: 8px 10px; }
+  .cs-end-date-field { width: 110px; }
+  .cs-days { gap: 5px 10px; }
+  .cs-summary { font-size: 11.5px; }
+
+  .cs-pane      { min-width: 0; flex: 1; }
+  .cs-pane-list { min-height: 130px; max-height: 160px; }
+
+  /* Run Now modal */
+  .rn-body {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 16px 8px;
+    text-align: center;
+  }
+  .rn-icon-wrap { margin-top: 0; }
+  .rn-rows { grid-template-columns: 1fr 1fr; gap: 8px 12px; }
+  .rn-info  { width: 100%; }
+}
+
+/* ---- ≤ 480px ---- */
+@media (max-width: 480px) {
+
+  .cs-body { padding: 10px; max-height: calc(92vh - 100px); }
+  .cs-right { flex-direction: column; }
+  .cs-pane-list { min-height: 110px; max-height: 140px; }
+
+  .cs-end-group       { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .cs-end-date-field  { width: 100%; }
+  .cs-end-date-wrap   { width: 100%; }
+
+  .rn-rows { grid-template-columns: 1fr; gap: 8px; }
+  .rn-body { padding: 12px 12px 6px; }
+
+  .sched-enable-btn::after { display: none; }
 }

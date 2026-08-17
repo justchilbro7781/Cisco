@@ -290,3 +290,36 @@
     margin-left: 0;
   }
 }
+
+/* ==========================================================================
+   RESPONSIVE — bulk-request.css
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  /* Toolbar wraps naturally (already flex-wrap:wrap) — just tighten gap */
+  .bulk-toolbar { gap: 8px 12px; padding: 10px 12px; }
+
+  .bulk-field   { flex: 1 1 auto; }
+  .bulk-select  { min-width: 90px; }
+  .bulk-input   { min-width: 120px; }
+  .bulk-purge   { margin-left: 0; width: 100%; text-align: center; }
+
+  /* Cards: 2 per row */
+  .bulk-card {
+    flex: 0 0 calc(50% - 1px);
+    max-width: calc(50% - 1px);
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Cards: full width */
+  .bulk-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+    border-right: none;
+  }
+
+  .bulk-toolbar { padding: 8px 10px; }
+}

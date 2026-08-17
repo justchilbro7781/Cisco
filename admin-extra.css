@@ -499,3 +499,67 @@
   .support-two-col { grid-template-columns: 1fr; }
   .gadget-grid { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   RESPONSIVE — admin-extra.css
+   Breakpoints: ≤ 768px, ≤ 480px
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  /* Support page — status cards 2-col */
+  .support-status-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .support-two-col    { grid-template-columns: 1fr; gap: 12px; }
+
+  /* Gadget grid — 1 column */
+  .gadget-grid { grid-template-columns: 1fr; gap: 6px; }
+
+  /* Layout preview — 1 column */
+  .layout-preview { grid-template-columns: 1fr; min-height: 140px; }
+
+  /* Page tabs — scrollable row */
+  .page-tabs {
+    padding: 0 12px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page-tab { padding: 10px 12px; font-size: 12.5px; white-space: nowrap; }
+
+  /* Page tab panel */
+  .page-tab-panel { padding: 14px 14px; }
+
+  /* Settings rows — stack label above control */
+  .setting-row {
+    flex-direction: column;
+    gap: 8px;
+    max-width: 100%;
+  }
+  .setting-row-control { padding-top: 0; }
+  .setting-input { width: 100%; }
+  .setting-input.narrow { width: 90px; }
+
+  /* System-wide audit toolbar — wrap */
+  .audit-page-toolbar { gap: 8px 12px; padding: 10px 14px; }
+  .audit-page-field select,
+  .audit-page-field input { font-size: 12px; }
+
+  /* Settings footer */
+  .settings-foot { padding: 12px 14px; flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+
+  /* Support — 1 column status cards */
+  .support-status-row { grid-template-columns: 1fr; }
+
+  /* Support card body */
+  .support-card-body { padding: 12px; }
+
+  /* Page tab panel */
+  .page-tab-panel { padding: 10px; }
+
+  /* Setting rows */
+  .setting-row { padding: 10px 0; }
+}

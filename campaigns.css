@@ -2155,3 +2155,869 @@ tr.detail-row td {
     min-height: 300px;
   }
 }
+
+/* ==========================================================================
+   RESPONSIVE — campaigns.css
+   Breakpoints: ≤ 1024px, ≤ 768px, ≤ 480px
+   ========================================================================== */
+
+/* ---- ≤ 1024px ---- */
+@media (max-width: 1024px) {
+  table.grid { min-width: 700px; }
+
+  .grid-toolbar {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+
+  /* User-type / status filter dropdowns in toolbar */
+  .bulk-field { flex-shrink: 0; }
+}
+
+/* ---- ≤ 768px ---- */
+@media (max-width: 768px) {
+
+  /* Grid toolbar: wrap items, give each row full width */
+  .grid-toolbar {
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    gap: 6px 8px;
+  }
+
+  .record-count { order: 0; flex: 1; }
+  .im-spacer    { display: none; }
+  .actions-btn  { order: 2; margin-left: auto; }
+
+  /* Filter dropdowns in toolbar (users page) */
+  .bulk-field {
+    order: 1;
+    flex: 1 1 auto;
+  }
+  .bulk-field label { font-size: 12px; }
+  .bulk-select      { min-width: 100px; height: 26px; font-size: 12px; }
+
+  /* Table: horizontal scroll, smaller padding */
+  .grid-scroll  { min-height: 260px; }
+  table.grid    { min-width: 560px; font-size: 12px; }
+
+  .head-row th  { padding: 7px 14px 7px 8px; font-size: 12px; }
+  tbody td      { padding: 6px 8px; }
+
+  /* Actions column buttons: slightly larger tap targets */
+  .row-btn      { padding: 5px; }
+  .row-btn .icon { width: 15px; height: 15px; }
+
+  /* Actions dropdown: full width below toolbar */
+  .actions-menu {
+    right: 8px;
+    left: 8px;
+    min-width: unset;
+    max-width: unset;
+  }
+  .actions-menu.wide { max-width: unset; }
+
+  /* Detail row: less indentation */
+  .detail-grid {
+    margin: 10px 10px 12px 16px;
+    padding: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px 12px;
+  }
+
+  /* Supervisor / dual-pane modals stack vertically */
+  .sup-panes {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  /* Access-summary side-by-side → stacked */
+  .as-layout {
+    flex-direction: column;
+    max-height: none;
+  }
+  .as-tree-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ececec;
+    max-height: 220px;
+  }
+
+  /* Audit toolbar wraps */
+  .audit-toolbar {
+    flex-wrap: wrap;
+    padding: 10px 14px 4px;
+    gap: 8px;
+  }
+  .audit-search { min-width: 0; }
+
+  /* Audit chips: smaller, wrap */
+  .audit-chip { padding: 5px 11px; font-size: 11.5px; }
+
+  /* Agent-to-skill stacked (already has its own rule but re-assert) */
+  .a2s-layout {
+    flex-direction: column;
+  }
+  .a2s-skills-panel { width: 100%; }
+  .a2s-panes-wrap   { width: 100%; }
+
+  /* Pager + sup-list height */
+  .sup-list { height: 160px; }
+}
+
+/* ---- ≤ 480px ---- */
+@media (max-width: 480px) {
+
+  .grid-toolbar { padding: 6px 8px; gap: 5px; }
+
+  table.grid { min-width: 480px; font-size: 11.5px; }
+  .head-row th { padding: 6px 10px 6px 6px; font-size: 11.5px; }
+  tbody td     { padding: 5px 6px; }
+
+  /* Hide filter row on tiny screens — user can still use search if present */
+  .filter-row { display: none; }
+
+  /* Action buttons: icon only, bigger tap area */
+  .row-btn      { padding: 6px; }
+  .row-btn .icon { width: 16px; height: 16px; }
+
+  /* Detail grid: single column */
+  .detail-grid {
+    grid-template-columns: 1fr;
+    margin: 8px 8px 10px 12px;
+    padding: 10px;
+  }
+
+  /* Modal foot buttons full-width stack */
+  .modal-foot {
+    flex-direction: column-reverse;
+    gap: 6px;
+  }
+  .modal-btn { width: 100%; text-align: center; padding: 9px 12px; }
+
+  /* Audit chips */
+  .audit-chips  { gap: 5px; padding: 10px 12px; }
+  .audit-chip   { padding: 5px 9px; font-size: 11px; }
+
+  /* Pager */
+  .sup-pager button { padding: 2px 6px; }
+  .sup-list { height: 130px; }
+}
+
+/* ---------- Edit Control Schedule Modal (Pixel-perfect match to Cisco screenshot) ---------- */
+.ec-modal {
+  max-width: 980px;
+  width: 92vw;
+}
+
+.ec-fields {
+  padding: 18px 60px 6px;
+}
+
+.ec-field-row {
+  display: flex;
+  gap: 56px;
+  margin-bottom: 14px;
+}
+
+.ec-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.ec-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3a3a3a;
+  margin-bottom: 5px;
+}
+
+.ec-field input[type="text"],
+.ec-field select,
+.ec-field textarea {
+  width: 100%;
+  border: 1px solid #d1d6db;
+  border-radius: 2px;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ec-field input[type="text"]:focus,
+.ec-field select:focus,
+.ec-field textarea:focus {
+  border-color: #049fd9;
+  box-shadow: 0 0 0 2px rgba(4, 159, 217, 0.15);
+}
+
+.ec-field input[readonly] {
+  background: #f1f2f3;
+  color: #8a9299;
+  cursor: not-allowed;
+}
+
+.ec-field textarea {
+  min-height: 50px;
+  resize: vertical;
+}
+
+.ec-field select {
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 13px;
+  cursor: pointer;
+  height: 30px;
+}
+
+/* Tabs section - light blue container with active tab styling */
+.ec-tabs-wrap {
+  padding: 10px 36px 0;
+}
+
+.ec-tabs {
+  display: inline-flex;
+  background: #eef3f8;
+  border: 1px solid #dfe7ee;
+  padding: 5px 6px;
+  border-radius: 3px;
+}
+
+.ec-tab {
+  border: none;
+  background: transparent;
+  padding: 5px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #6b7883;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+  letter-spacing: 0.1px;
+}
+
+.ec-tab:hover:not(.active) {
+  color: #3d7cb5;
+}
+
+.ec-tab.active {
+  background: #fff;
+  color: #3d7cb5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Schedule table */
+.ec-sched-wrap {
+  padding: 14px 36px 22px;
+}
+
+.ec-sched-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d6db;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ec-sched-table th,
+.ec-sched-table td {
+  border: 1px solid #d1d6db;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  background: #fff;
+  font-size: 12px;
+  color: #3a3a3a;
+}
+
+.ec-sched-table thead th {
+  background: #fff;
+  font-weight: 500;
+}
+
+.ec-sched-pluscol {
+  width: 52px;
+  text-align: center !important;
+  padding: 6px 4px !important;
+  background: #fff;
+}
+
+.ec-plus-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: #86447c;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+
+.ec-plus-btn:hover {
+  background: #6e3765;
+  transform: scale(1.06);
+}
+
+.ec-plus-btn .icon {
+  width: 12px;
+  height: 12px;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.ec-day-col {
+  width: calc((100% - 52px) / 7);
+  padding: 6px 10px !important;
+}
+
+.ec-day-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #3d7cb5;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  transition: background 0.15s ease;
+}
+
+.ec-day-btn:hover {
+  background: #2f6494;
+}
+
+.ec-day-btn .ec-day-icon {
+  width: 11px;
+  height: 11px;
+  opacity: 0.9;
+  stroke: #fff;
+  stroke-width: 2.4;
+}
+
+.ec-shift-label-td {
+  font-weight: 600;
+  color: #4a5660;
+  background: #fff;
+  font-size: 12px;
+}
+
+.ec-shift-cell {
+  font-size: 12px;
+  color: #4a5660;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  min-height: 32px;
+}
+
+.ec-shift-cell.closed {
+  color: #c84a52;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.ec-shift-cell.empty {
+  color: #bbb;
+  cursor: default;
+  background: #fafafa;
+}
+
+.ec-shift-cell:not(.empty):not(.closed):hover {
+  background: #e9f2fb;
+}
+
+.ec-shift-cell.closed:hover {
+  background: #fce9ea;
+}
+
+/* Footer - pale cyan background, cyan Save + gray Cancel */
+.ec-foot {
+  background: #f3f7fb;
+  border-top: 1px solid #e3e9f0;
+  padding: 14px 36px 16px;
+}
+
+.ec-foot-inner {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ec-btn {
+  height: 32px;
+  min-width: 72px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ec-btn.save {
+  background: #5bd0e2;
+  border-color: #4fc4d6;
+  color: #fff;
+}
+
+.ec-btn.save:hover {
+  background: #47c1d4;
+  border-color: #3ab0c4;
+}
+
+.ec-btn:not(.save) {
+  background: #aab2ba;
+  border-color: #9aa3ac;
+  color: #fff;
+}
+
+.ec-btn:not(.save):hover {
+  background: #939ba3;
+  border-color: #828a92;
+}
+
+/* ---------- Day Schedule Modal (Image 2) ---------- */
+.ds-modal {
+  max-width: 820px;
+}
+
+.ds-topbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  padding: 16px 24px 8px;
+}
+
+.ds-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-dropdown label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #55606a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.ds-dropdown select {
+  height: 28px;
+  min-width: 90px;
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+  padding: 0 26px 0 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 14px;
+  cursor: pointer;
+}
+
+.ds-table-wrap {
+  padding: 8px 24px 4px;
+}
+
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.ds-table thead tr {
+  background: #f2f5f8;
+}
+
+.ds-table th {
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #55606a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.ds-table td {
+  padding: 6px 10px;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  vertical-align: middle;
+}
+
+.ds-table td.shift-label {
+  font-weight: 600;
+  color: #555;
+  background: #fafbfc;
+}
+
+.ds-shift-input {
+  width: 100%;
+  height: 28px;
+  border: 1px solid #c9c9c9;
+  border-radius: 3px;
+  padding: 0 8px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ds-shift-input[readonly] {
+  background: #f2f3f4;
+  color: #9aa5ad;
+  border-color: #e0e2e5;
+}
+
+.ds-shift-input:focus {
+  border-color: #049fd9;
+  box-shadow: 0 0 0 3px rgba(4, 159, 217, 0.12);
+}
+
+.ds-range-label {
+  font-size: 11px;
+  color: #9aa5ad;
+  margin-left: 6px;
+}
+
+.ds-disabled-cell {
+  text-align: center;
+}
+
+.ds-disabled-cell input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #049fd9;
+}
+
+.ds-nav {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 12px 24px 4px;
+}
+
+.ds-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 14px;
+  background: #049fd9;
+  border: 1px solid #049fd9;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.ds-nav-btn:hover {
+  background: #0389bd;
+  border-color: #0389bd;
+}
+
+.ds-nav-btn .icon {
+  width: 13px;
+  height: 13px;
+}
+
+/* ---------- Actions dropdown (routing-controls) ----------
+   Sections + Columns checklist, drag-to-reorder, custom scrollbars */
+.actions-menu#actionsMenu {
+  min-width: 260px;
+  max-width: 280px;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.actions-menu#actionsMenu[hidden] {
+  display: none;
+}
+
+.act-scroll {
+  flex: 1;
+  min-width: 0;
+  max-height: min(70vh, 480px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.act-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.act-section {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 6px;
+  cursor: default;
+  border-radius: 4px;
+}
+
+.act-section.dragging {
+  opacity: 0.4;
+}
+
+.act-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 26px;
+  flex: none;
+  color: #c2c8cd;
+  cursor: grab;
+}
+
+.act-drag-handle:active {
+  cursor: grabbing;
+}
+
+.act-drag-handle .icon {
+  width: 12px;
+  height: 12px;
+}
+
+.act-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 7px 6px;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  border-radius: 4px;
+}
+
+.act-item .icon {
+  width: 14px;
+  height: 14px;
+  color: #049fd9;
+}
+
+.act-item:hover {
+  background: #eaf7fd;
+  color: #0a7ba8;
+}
+
+.act-item-highlight {
+  font-weight: 600;
+}
+
+.act-drop-indicator {
+  height: 2px;
+  background: #049fd9;
+  border-radius: 2px;
+}
+
+.act-divider {
+  height: 1px;
+  margin: 4px 10px;
+  background: #ececec;
+}
+
+.act-cols-label {
+  padding: 6px 14px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #9aa5ad;
+}
+
+/* Column checklist: horizontally scrollable row of drag-reorderable chips */
+#actColumnsList {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 10px 8px;
+}
+
+#actColumnsList::-webkit-scrollbar {
+  display: none;
+}
+
+.act-col-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  background: #f5f7f8;
+  border: 1px solid #e3e6e8;
+  border-radius: 14px;
+  padding: 3px 10px 3px 4px;
+}
+
+.act-col-chip.dragging {
+  opacity: 0.4;
+}
+
+.act-col-drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  color: #c2c8cd;
+  cursor: grab;
+}
+
+.act-col-drag:active {
+  cursor: grabbing;
+}
+
+.act-col-drag .icon {
+  width: 11px;
+  height: 11px;
+}
+
+.act-col-check {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #444;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.act-col-check input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: #049fd9;
+}
+
+/* Custom horizontal scrollbar for the columns chip row */
+.act-hscroll-track {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px 6px;
+}
+
+.act-hscroll-bar {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: #eef0f1;
+  border-radius: 2px;
+}
+
+.act-hscroll-thumb {
+  position: absolute;
+  top: 0;
+  height: 4px;
+  min-width: 24px;
+  background: #b9c1c6;
+  border-radius: 2px;
+}
+
+.act-hscroll-btn {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  line-height: 14px;
+  border: none;
+  background: #f0f2f3;
+  color: #6b7580;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+}
+
+.act-hscroll-btn:hover {
+  background: #e3f3fb;
+  color: #0a7ba8;
+}
+
+/* Custom vertical scrollbar for the whole dropdown */
+.act-vscroll-track {
+  flex: none;
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border-left: 1px solid #ececec;
+}
+
+.act-vscroll-bar {
+  position: relative;
+  flex: 1;
+  width: 4px;
+  background: #eef0f1;
+  border-radius: 2px;
+}
+
+.act-vscroll-thumb {
+  position: absolute;
+  left: 0;
+  width: 4px;
+  min-height: 24px;
+  background: #b9c1c6;
+  border-radius: 2px;
+}
+
+.act-vscroll-btn {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  line-height: 12px;
+  border: none;
+  background: #f0f2f3;
+  color: #6b7580;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+}
+
+.act-vscroll-btn:hover {
+  background: #e3f3fb;
+  color: #0a7ba8;
+}
